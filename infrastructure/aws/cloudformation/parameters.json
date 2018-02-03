@@ -1,0 +1,10 @@
+[
+	{
+    "ParameterKey": "vpc_tag",
+    "ParameterValue": "MyKey"
+    },
+    {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "m1.micro"    	
+    }
+]
