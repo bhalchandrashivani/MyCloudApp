@@ -1,5 +1,7 @@
 package com.csye6225.spring2018;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,6 +42,12 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String passwordEncrption(String password)
+    {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
 }
 

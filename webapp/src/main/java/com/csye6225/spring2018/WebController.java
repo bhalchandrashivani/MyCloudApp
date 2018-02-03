@@ -1,6 +1,7 @@
 package com.csye6225.spring2018;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +18,7 @@ public class WebController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @RequestMapping(value={"/","home"})
+    @RequestMapping(value={"/","home"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public String home(){
         return "home";
     }
@@ -32,7 +33,7 @@ public class WebController {
         return "admin";
     }
 
-    @RequestMapping(value={"/login"})
+    @RequestMapping(value={"/login"},produces = MediaType.APPLICATION_JSON_VALUE)
     public String login(){
         return "login";
     }
@@ -70,6 +71,7 @@ public class WebController {
             return "webresult";
 
         }
+
 
         else {
 

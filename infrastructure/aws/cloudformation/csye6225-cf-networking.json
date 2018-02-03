@@ -1,0 +1,56 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS Cloud template",
+
+  "Parameters" : {
+    "vpcTag" : {
+      "Type" : "String"
+    },
+    "internetgatewayTag" : {
+      "Type" : "String"
+    },
+    "routeTag" : {
+      "Type" : "String"
+    }
+  },
+  "Resources" : {
+  	"myvpc" : {
+  		"Type" : "AWS::EC2::VPC",
+  		"Properties" : {
+  			"CidrBlock" : "10.0.0.0/16",
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "vpcTag"}} ]
+  		}
+  	},
+  	"myInternetGateway" : {
+  		"Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "internetgatewayTag"}}]
+      }
+
+  	},
+  	"AttachGateway" : {
+  		"Type" : "AWS::EC2::VPCGatewayAttachment",
+  		"Properties" : {
+  			"VpcId" : { "Ref" : "myvpc" },
+  			"InternetGatewayId" : { "Ref" : "myInternetGateway" }
+  		}
+  	},
+  	"myRouteTable" : {
+  		"Type" : "AWS::EC2::RouteTable",
+  		"Properties" : {
+  			"VpcId" : { "Ref" : "myvpc" },
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "routeTag"}}]
+  		}
+  	},
+  	"myRoute" : {
+  		"Type" : "AWS::EC2::Route",
+  		"DependsOn" : "myInternetGateway",
+  		"Properties" : {
+  			"RouteTableId" : { "Ref" : "myRouteTable" },
+  			"DestinationCidrBlock" : "0.0.0.0/0",
+  			"GatewayId" : { "Ref" : "myInternetGateway" }
+      }
+  	}
+  }
+}
