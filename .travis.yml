@@ -13,7 +13,7 @@ script:
 
 deploy:
   provider: releases
-  api_key: ${dd1c40758d1ed24a98170e0b17d09d5429bc7096}
+  api_key: "dd1c40758d1ed24a98170e0b17d09d5429bc7096"
   file: "build/libs/Project.war"
   skip_cleanup: true
   on:
