@@ -7,8 +7,10 @@ install: true
 
 script:
   - ./webapp/gradlew build
+  - ./webapp/gradlew war
 
 notifications:
   username:
     recipients:
-      - chandra.ro@husky.neu.edu,bahcivan.a@husky.neu.edu
+      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
+
