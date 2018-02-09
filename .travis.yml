@@ -12,5 +12,43 @@ script:
 notifications:
   username:
     recipients:
-      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
+      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.n$
 
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+#  - echo `pwd` # debug
+#  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
+  - export /home/ahmet/csye6225/dev/webapp/gradle=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 1 week
+  only:
+    - master
+
+test:
+  stage: test
+  script:
+    - ./gradlew check
+
+deploy:
+  stage: deploy
+  script:
+    - ./deploy
+
+after_script:
+  - echo "End CI"
