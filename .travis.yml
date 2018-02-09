@@ -7,6 +7,8 @@ install: true
 
 script:
   - ./webapp/gradlew build
+  - ./webapp/gradlew war
+  - ./webapp/gradlew zip
 
 notifications:
   username:
