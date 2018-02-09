@@ -6,9 +6,7 @@ sudo: false
 install: true
 
 script:
-  - ./webapp/gradlew build
-  - ./webapp/gradlew war
-  - ./webapp/gradlew zip
+  - ./webapp/gradlew build,zip,war
 
 notifications:
   username:
