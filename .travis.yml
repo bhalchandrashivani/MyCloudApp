@@ -11,7 +11,4 @@ script:
 notifications:
   username:
     recipients:
-      - chandra.ro@husky.neu.edu
-      -	bhalchandra.s@husky.neu.edu
-      - bahcivan.a@husky.neu.edu
-      - siddiqui.d@husky.neu.edu
+      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
