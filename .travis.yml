@@ -2,26 +2,13 @@ language: java
 jdk:
 - oraclejdk8
 
-sudo: true
+sudo: false
 install: true
 
-before_install:
- - chmod +x gradlew
-
 script:
-  - ./webapp/gradlew clean build -i --continue
-
-deploy:
-  provider: releases
-  api_key: "dd1c40758d1ed24a98170e0b17d09d5429bc7096"
-  file: "build/libs/Project.war"
-  skip_cleanup: true
-  on:
-    all_branches: true
-    tags: true
+  - ./webapp/gradlew build
 
 notifications:
   username:
     recipients:
-      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.n$
-
+      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
