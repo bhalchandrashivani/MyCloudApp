@@ -60,6 +60,7 @@ public class WebController {
 
 
         if(certs.isEmpty()) {
+            System.out.println("userdeails are being added");
             String newpassword = account.getPassword();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String hashedPassword = passwordEncoder.encode(newpassword);
