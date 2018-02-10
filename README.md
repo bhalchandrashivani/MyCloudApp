@@ -7,8 +7,8 @@ MVC framework based. Load tests on Jmeter and CI on Travis.
 ```
 Ahmet Bahcivan (bahcivan.a@husky.neu.edu)
 Danish Siddiqui (danish9412@gmail.com)
-Shivani Bhalchandra (bhalchandra.s@husky.neu.edu)
 Rohit Chandra (chandra.ro@husky.neu.edu)
+Shivani Bhalchandra (bhalchandra.s@husky.neu.edu)
 
 ```
 
