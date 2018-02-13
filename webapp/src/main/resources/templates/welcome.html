@@ -7,7 +7,7 @@
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
 
-<h1 style="color:blue"> Hello! </h1>
+<h1 style="color:#5f0015"> Hello! </h1>
 
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 
@@ -19,7 +19,7 @@
     document.getElementById("datetime").innerHTML = dt.toLocaleString();
 </script>
 
-<a style="color:blue" th:href="@{/}">Go to Home Page!</a>
+<a style="color:#5f0015" th:href="@{/}">Go to Home Page!</a>
 <br/>
 
 <form th:action="@{/logout}" method="post">
@@ -29,7 +29,9 @@
 <br/>
 <div th:if="${message}">
     <h2 th:text="${message}"/>
-</div>
+</div><br/><br/>
+
+<img th:src="@{/tmp/cloudpic/cat.png}"></img><br/><br/>
 <a href="/upload">Upload Display Picture</a>
 
 
