@@ -4,7 +4,7 @@
       "KeyName":{
          "Description":"EC2 Key Pair for SSH Access, you must have created these prior to running this.",
          "Type":"String",
-         "Default":"rohit"
+         "Default":"danish9412"
       },
       "NameTag" : {
       "Type" : "String"

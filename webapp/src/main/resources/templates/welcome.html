@@ -25,6 +25,13 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+<br/>
+<br/>
+<div th:if="${message}">
+    <h2 th:text="${message}"/>
+</div>
+<a href="/upload">Upload Display Picture</a>
+
 
 <div th:replace="fragments/footer :: footer"/>
 

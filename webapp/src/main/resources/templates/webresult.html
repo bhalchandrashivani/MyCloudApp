@@ -21,8 +21,12 @@
 <script>
     var dt = new Date();
     document.getElementById("datetime").innerHTML = dt.toLocaleString();
-</script>
+</script><br/>
 
+<form method="POST" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="file" /><br/><br/>
+    <input type="submit" value="Submit" />
+</form><br/>
 
 <div th:replace="fragments/footer :: footer"/>
 </body>
