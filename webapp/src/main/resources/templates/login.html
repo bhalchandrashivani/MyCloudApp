@@ -6,15 +6,9 @@
     <title>>Welcome Security with Spring Boot!</title>
 </head>
 <body>
-<div th:replace="fragments/navigation :: navigation"/>
-<div th:if="${param.error}">
-    <h1 style="color:red">Username or Password is wrong. Please check again</h1>
+<h1>this is login page</h1>
 
-</div>
-<div th:if="${param.logout}">
-    <h1 style="color:blue">Logged out.</h1>
-</div>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/login}" method="POST">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/>    </div>
