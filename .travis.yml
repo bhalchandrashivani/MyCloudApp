@@ -6,13 +6,17 @@ sudo: false
 install: true
 branches:
   only:
-  - $branch
+  - demo
 
 script:
-  - ./webapp/gradlew build
+  - pwd
   - cd webapp
   - ./gradlew war
-
+  - cd build/libs
+  - ls -al
+  - cd ../../..
+  - pwd
+  - ls -al
 notifications:
   username:
     recipients:
