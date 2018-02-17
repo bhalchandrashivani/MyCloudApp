@@ -27,7 +27,7 @@ notifications:
 after_success:
   - pwd
   - ls -al
-  - mkdir codedeploy
+  - mkdir codedeploy_artifacts
   - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/codedeploy
   - ls -al
   - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy_artifacts/
@@ -50,4 +50,5 @@ deploy:
     secret_access_key: $secret_access_key
     on:
       branch: demo
+
 
