@@ -8,20 +8,15 @@
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
 
-<h1 th:inline="text">Hello !</h1>
+<h1 th:inline="text">User Does not Exists !</h1>
+<p>
+    <a href="/aboutme">Go Back to Profiles page</a>
+</p>
 
-<form th:action="@{/logout}" method="get">
-    <input type="submit" value="Sign Out"/>
-</form>
-<a href="/">Go Back to Login Page</a>
+<p>
+    <a href="/">Go Back to Login Page</a>
+</p>
 
-<h1>Result</h1>
-<p>Date/Time: <span id="datetime"></span></p>
-
-<script>
-    var dt = new Date();
-    document.getElementById("datetime").innerHTML = dt.toLocaleString();
-</script>
 
 
 <div th:replace="fragments/footer :: footer"/>

@@ -23,33 +23,33 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.csye6225.spring2018.Account;
+//import com.csye6225.spring2018
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class WebControllerTest {
-
-    private Account myAccount;
-
-    @Before
-    public void setUp() {
-        myAccount = new Account();
-        myAccount.setPassword("123456");
-    }
-
-
-    @Test
-    public void TestEncryption() {
-
-        String hashedPassword = myAccount.passwordEncrption(myAccount.getPassword());
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String secondhashedPassword = passwordEncoder.encode(myAccount.getPassword());
-
-        Assert.assertNotEquals(hashedPassword, secondhashedPassword);
-    }
-}
+//
+//    private Account myAccount;
+//
+//    @Before
+//    public void setUp() {
+//        myAccount = new Account();
+//        myAccount.setPassword("123456");
+//    }
+//
+//
+//    @Test
+//    public void TestEncryption() {
+//
+//        String hashedPassword = myAccount.passwordEncrption(myAccount.getPassword());
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String secondhashedPassword = passwordEncoder.encode(myAccount.getPassword());
+//
+//        Assert.assertNotEquals(hashedPassword, secondhashedPassword);
+//    }
+//}
 
 //public class WebControllerTest {
 //
@@ -144,4 +144,4 @@ public class WebControllerTest {
 
 
 
-//}
+}
