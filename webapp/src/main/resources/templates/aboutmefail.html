@@ -1,18 +1,24 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <div th:replace="fragments/header :: header"/>
 <head>
-    <title>Security with Spring Boot</title>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
 
-<div class="container">
-    <p>
-        Welcome to CSYE 6225 Spring 2018 Semester!!!
-    </p>
+<h1 th:inline="text">User Does not Exists !</h1>
+<p>
+    <a href="/aboutme">Go Back to Profiles page</a>
+</p>
 
-</div>
+<p>
+    <a href="/">Go Back to Login Page</a>
+</p>
+
+
+
 <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
