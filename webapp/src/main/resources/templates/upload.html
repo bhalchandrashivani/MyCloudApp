@@ -3,6 +3,7 @@
 <body>
 
 <h1>Upload your display picture.</h1>
+<img th:src="${#httpServletRequest.getParameter('pickurl')}"/>
 
 <form method="POST" action="/upload" enctype="multipart/form-data">
     <input type="file" name="file" /><br/><br/>
