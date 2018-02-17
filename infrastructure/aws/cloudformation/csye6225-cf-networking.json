@@ -1,0 +1,153 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS Cloud template",
+
+  "Parameters" : {
+    "vpcTag" : {
+      "Type" : "String"
+    },
+    "internetgatewayTag" : {
+      "Type" : "String"
+    },
+    "routeTag" : {
+      "Type" : "String"
+    },
+    "PrivaterouteTag" : {
+      "Type" : "String"
+    },
+    "SecurityGroupWebTag" : {
+      "Type" : "String"
+    },
+    "SecurityGroupdbTag" : {
+      "Type" : "String"
+    }
+  },
+  "Resources" : {
+  	"myvpc" : {
+  		"Type" : "AWS::EC2::VPC",
+  		"Properties" : {
+  			"CidrBlock" : "10.0.0.0/16",
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "vpcTag"}} ]
+  		}
+  	},
+  	"myInternetGateway" : {
+  		"Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "internetgatewayTag"}}]
+      }
+
+  	},
+  	"AttachGateway" : {
+  		"Type" : "AWS::EC2::VPCGatewayAttachment",
+  		"Properties" : {
+  			"VpcId" : { "Ref" : "myvpc" },
+  			"InternetGatewayId" : { "Ref" : "myInternetGateway" }
+  		}
+  	},
+  	"myRouteTable" : {
+  		"Type" : "AWS::EC2::RouteTable",
+  		"Properties" : {
+  			"VpcId" : { "Ref" : "myvpc" },
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "routeTag"}}]
+  		}
+  	},
+  	"myRoute" : {
+  		"Type" : "AWS::EC2::Route",
+  		"DependsOn" : "myInternetGateway",
+  		"Properties" : {
+  			"RouteTableId" : { "Ref" : "myRouteTable" },
+  			"DestinationCidrBlock" : "0.0.0.0/0",
+  			"GatewayId" : { "Ref" : "myInternetGateway" }
+      }
+  	},
+    "PrivateRouteTable" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : {"Ref" : "myvpc"},
+        "Tags" : [
+          {"Key" : "Name", "Value" : { "Ref" : "PrivaterouteTag"} }
+        ]
+      }
+    },
+    "PublicSubnetForWebServer" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "VpcId" : { "Ref" : "myvpc" },
+        "CidrBlock" : "10.0.0.0/24",
+        "AvailabilityZone" : "us-east-1a",
+        "Tags" : [
+          {"Key" : "Network", "Value" : "Public" }
+        ]
+      }
+    },
+    "PublicSubnetRouteTableAssociation1" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "SubnetId" : { "Ref" : "PublicSubnetForWebServer" },
+        "RouteTableId" : { "Ref" : "myRouteTable" }
+      }
+    },
+    "PrivateSubnetForDBServer" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "VpcId" : { "Ref" : "myvpc" },
+        "CidrBlock" : "10.0.1.0/24",
+        "AvailabilityZone" : "us-east-1b",
+        "Tags" : [
+          {"Key" : "Network", "Value" : "Private" }
+        ]
+      }
+    },
+    "PrivateSubnetRouteTableAssociation1" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "SubnetId" : { "Ref" : "PrivateSubnetForDBServer" },
+        "RouteTableId" : { "Ref" : "PrivateRouteTable" }
+      }
+    },
+    "dbsg": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Database SG",
+        "GroupName": {"Ref" : "SecurityGroupdbTag"},
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "SecurityGroupdbTag"}} ],
+        "SecurityGroupIngress": [{
+          "IpProtocol": "tcp",
+          "FromPort": "3306",
+          "ToPort": "3306",
+          "SourceSecurityGroupName": {
+            "Ref": "webappsg"
+          }
+        }]
+      }
+    },
+    "webappsg": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Webapp SG",
+        "GroupName": {"Ref" : "SecurityGroupWebTag"},
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "SecurityGroupWebTag"}} ],
+        "SecurityGroupIngress": [{
+          "IpProtocol": "tcp",
+          "CidrIp": "0.0.0.0/0",
+          "FromPort": "22",
+          "ToPort": "22"
+        },
+        {
+          "IpProtocol": "tcp",
+          "CidrIp": "0.0.0.0/0",
+          "FromPort": "443",
+          "ToPort": "443"
+        },
+        {
+          "IpProtocol": "tcp",
+          "CidrIp": "0.0.0.0/0",
+          "FromPort": "80",
+          "ToPort": "80"
+        }
+      ]
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="fragments/header :: header"/>
+
+<head>
+    <title>>Welcome Security with Spring Boot!</title>
+</head>
+<body>
+<h1>this is login page</h1>
+
+<form th:action="@{/login}" method="POST">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/>    </div>
+</form>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
