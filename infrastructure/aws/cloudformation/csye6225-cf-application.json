@@ -1,42 +1,79 @@
-{"AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"Deploy a simple Amazon Linux Instance and allow SSH connectivity.",
-   "Parameters":{
-      "KeyName":{
-         "Description":"EC2 Key Pair for SSH Access, you must have created these prior to running this.",
-         "Type":"String",
-         "Default":"rohit"
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Setup cloud network - csye6225-spring2018",
+  "Parameters":{
+     "subnetgroupname":{
+        "Description":"DB subnet group name",
+        "Type":"String"
+     }
+},
+  "Resources": {
+	"EC2MyInstance": {
+			"Type" : "AWS::EC2::Instance",
+			"Properties": {
+				"ImageId": "ami-66506c1c",
+				"InstanceType": "t2.micro",
+				"DisableApiTermination": true,
+				"BlockDeviceMappings" : [
+				{
+					"DeviceName": "/dev/sda1",
+					"Ebs": {
+						    "VolumeSize": "16",
+						    "VolumeType": "gp2"
+					       }
+				}
+		],
+
+		"Tags": [{"Key": "Name", "Value": {"Fn::Join": ["",[{"Ref": "AWS::StackName"},"-csye6225-EC2"]]}}]
+			}},
+      "myDynamoDBTable" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "AttributeDefinitions" : [
+          {
+            "AttributeName" : "id",
+            "AttributeType" : "S"
+          }
+        ],
+        "KeySchema" : [
+          {
+            "AttributeName" : "id",
+            "KeyType" : "HASH"
+          }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : "5",
+          "WriteCapacityUnits" : "5"
+        },
+        "TableName" : "csye6225",
+        "Tags" : [
+            {
+        "Key" : "Name",
+        "Value": {"Fn::Join": ["",[{"Ref": "AWS::StackName"},"-csye6225-DynamoDB"]]}
+            }]
+        }
       },
-      "NameTag" : {
-      "Type" : "String"
-    }
-   },
-
-   "Resources":{
-      "SimpleInstance":{
-         "Type":"AWS::EC2::Instance",
-         "Properties":{
-	            "KeyName" : { "Ref" : "KeyName" },
-	            "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "NameTag"}} ],
-	            "InstanceType":"t2.micro",
-	            "ImageId":"ami-66506c1c",
-	            "InstanceInitiatedShutdownBehavior":"stop",
-	            "DisableApiTermination":"true",
-	            "BlockDeviceMappings": [
-				         {
-				           "DeviceName" : "/dev/sda1",
-					   "VirtualName" : "ephemeral0",
-				             "Ebs": {
-
-				                 "VolumeSize": 16,
-				                 "DeleteOnTermination": false,
-				                 "VolumeType": "gp2"
-
-				             }
-
-				         }
-	     		]
-
-	        }
-      	}
-   }
+      "S3bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "s3.steponcloud.me"
+      }
+    },
+      "csye6225rds" : {
+        "Type" : "AWS::RDS::DBInstance",
+      "Properties" : {
+      "DBName" : "csye6225a",
+      "AllocatedStorage" : "5",
+      "DBInstanceClass" : "db.t2.medium",
+      "Engine" : "MySQL",
+      "EngineVersion" : "5.6.37",
+      "MasterUsername" : "csye6225master",
+      "MasterUserPassword" : "csye6225master",
+      "DBSubnetGroupName" : {"Ref" : "subnetgroupname"},
+      "Tags" : [ { "Key" : "Name", "Value" : "MySQLDatabase" } ]
+      },
+      "DeletionPolicy" : "Snapshot"
+      }
+      }
 }
