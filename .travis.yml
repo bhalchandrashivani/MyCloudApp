@@ -21,3 +21,20 @@ notifications:
   username:
     recipients:
       - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
+
+
+after_success:
+  - pwd
+  - ls -al
+  - mkdir codedeploy
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/codedeploy
+  - ls -al
+  - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy/
+  - ls -al
+  - pwd
+  - cd codedeploy
+  - ls -al
+  - pwd
+  - cd ..
+  - pwd
+  - ls -al
