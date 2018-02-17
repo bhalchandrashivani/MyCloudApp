@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/header :: header"/>
+<head>
+    <title>Security with Spring Boot</title>
+</head>
+<body>
+<div th:replace="fragments/navigation :: navigation"/>
+
+<div class="container">
+    <p>
+        Welcome to view all profiles!!!
+    </p>
+</div>
+<hi >Please enter the name of the user </hi>
+<form th:action="@{/aboutme}" method="POST">
+<div><label> User Name : <input type="text" name="username"/> </label></div>
+<div><input type="submit" value="View Profile"/></div>
+</form>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
