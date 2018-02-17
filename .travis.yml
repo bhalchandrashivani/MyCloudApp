@@ -4,6 +4,9 @@ jdk:
 
 sudo: false
 install: true
+branches:
+  only:
+  - $branch
 
 script:
   - ./webapp/gradlew build
