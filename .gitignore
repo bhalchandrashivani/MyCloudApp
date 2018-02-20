@@ -20,6 +20,10 @@ build/**/*
 .gradle/**/*
 webapp/out/**/*
 
+/home/rscx/csye6225/dev/webapp/build/resources/main/application.properties
+/home/rscx/csye6225/dev/webapp/build/resources/main/application-aws.properties
+/home/rscx/csye6225/dev/webapp/build/resources/main/amazon.properties
+
 ### NetBeans ###
 nbproject/private/
 build/
