@@ -1,18 +1,16 @@
 package com.csye6225.spring2018.controllers;
 
 import javax.servlet.http.HttpServletRequest;
-
 import com.csye6225.spring2018.model.Account;
-import com.csye6225.spring2018.services.AwsS3Service;
 import com.csye6225.spring2018.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.awt.print.Pageable;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,18 +35,11 @@ public class LoginController {
     private String email;
 
     @Autowired
-    private AwsS3Service awsS3Service;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private Environment environment;
 
-    //@Autowired
-   // private Configuration configuration;
    @GetMapping(value="/login")
     public String login(){
 
@@ -111,54 +103,20 @@ public class LoginController {
     public String myProfiledetails(Model model, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes,
                                    @ModelAttribute Account account, HttpServletRequest request) {
 
-        System.out.println("Uploading for " + email);
+        System.out.println(email);
         if (file.isEmpty()) {
             return "welcome";
         } else {
             Account user = userService.findByUsername(email);
-            String aboutmefromDb = user.getAboutme();
             try {
-             //   String abc =configuration.getName();
-             //   System.out.println(abc);
-               // public void getActiveProfiles() {
-                String[] profileName = environment.getActiveProfiles();
-                for (String profile : profileName) {
-                    System.out.println("Currently active profile - " + profile);
-                    if (profile.equalsIgnoreCase("default")) {
-                        byte[] bytes = file.getBytes();
-                        Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-                        Files.write(path, bytes);
-                        System.out.println("inside default upload");
-                        if (user != null) {
-                            user.setImagepath(path.toString());
-                            userService.saveUser(user);
-                        }
-                        model.addAttribute("username", email);
-                        model.addAttribute("aboutme",aboutmefromDb);
-                        return "welcome";
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+                Files.write(path, bytes);
 
-                    } else {
-                        byte[] bytes = file.getBytes();
-                        Path path = Paths.get( file.getOriginalFilename());
-
-                        //if (user != null) {
-
-                       // }
-                        System.out.println("inside aws upload");
-
-                        String fileName = file.getOriginalFilename();
-
-                        String newfilepath = awsS3Service.uploadFile(file, fileName);
-                        user.setImagepath(newfilepath);
-                        userService.saveUser(user);
-                        model.addAttribute("username", email);
-                        model.addAttribute("aboutme",aboutmefromDb);
-                        model.addAttribute("imagePath" , newfilepath);
-                        return "welcome";
-                    }
-
+                if(user!= null){
+                    user.setImagepath(path.toString());
+                    userService.saveUser(user);
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -168,57 +126,6 @@ public class LoginController {
         }
     }
 
-   // private static String DELETED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
-
-    @RequestMapping(value = "/deletephoto")
-    public String deletePhoto(Model model, RedirectAttributes redirectAttributes,
-                              @ModelAttribute Account account, HttpServletRequest request){
-        Account user = userService.findByUsername(email);
-        //String aboutmefromDb = "";
-       // Path path = Paths.get(aboutmefromDb);
-       // Files.delete(path,);
-        //String imagepathfromDb = user.getImagepath();
-        String aboutmefromDb = user.getAboutme();
-      //  String abc =configuration.getName();
-      //  System.out.println(abc);
-
-        String[] profileName = environment.getActiveProfiles();
-        for (String profile : profileName) {
-            System.out.println("Currently active profile - " + profile);
-            if (profile.equalsIgnoreCase("default")) {
-                //if (user != null) {
-                    String imagepathfromDb = user.getImagepath();
-                    System.out.println("inside default" + imagepathfromDb);
-                    String imagePathfromDbToDelete = "";
-
-                    Path path = Paths.get(imagePathfromDbToDelete);
-                    user.setImagepath(path.toString());
-                    userService.saveUser(user);
-                    model.addAttribute("username", email);
-                    model.addAttribute("aboutme",aboutmefromDb);
-                    return "welcome";
-
-
-               // }
-
-            } else {
-                String imagepathfromDb = user.getImagepath();
-                System.out.println("inside aws " + imagepathfromDb);
-                String imagePathfromDbToDelete  = "";
-                Path path = Paths.get(imagePathfromDbToDelete);
-                user.setImagepath(path.toString());
-                userService.saveUser(user);
-
-                awsS3Service.deleteFileFromS3Bucket(imagepathfromDb);
-                model.addAttribute("username", email);
-                model.addAttribute("aboutme",aboutmefromDb);
-                return "welcome";
-
-
-            }
-        }
-        return "welcome";
-    }
 
 
     @RequestMapping(value="/logout")
@@ -255,26 +162,24 @@ public class LoginController {
 
 
     @RequestMapping("/profilepic")
-    public ResponseEntity<byte[]> profilePic(HttpServletRequest request, Model model)  throws Exception {
+    public ResponseEntity<byte[]> profilePic(HttpServletRequest request)  throws Exception {
 
-        //HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 
         System.out.println(email);
         Account user = userService.findByUsername(email);
-        String userImagepathFromDb = user.getImagepath();
-        String fileUrl = userImagepathFromDb;
-        InputStream inputStream = new FileInputStream(userImagepathFromDb);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] picturebuffer = new byte[512];
-        int l = inputStream.read(picturebuffer);
-        while (l >= 0) {
-            outputStream.write(picturebuffer, 0, l);
-            l = inputStream.read(picturebuffer);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("content-type","image/jpg");
-        model.addAttribute("fileUrl",fileUrl);
-        return new ResponseEntity<byte[]>(outputStream.toByteArray(),headers, HttpStatus.OK);
+            String userImagepathFromDb = user.getImagepath();
+            InputStream inputStream = new FileInputStream(userImagepathFromDb);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] picturebuffer = new byte[512];
+            int l = inputStream.read(picturebuffer);
+            while (l >= 0) {
+                outputStream.write(picturebuffer, 0, l);
+                l = inputStream.read(picturebuffer);
+            }
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("content-type","image/jpg");
+                return new ResponseEntity<byte[]>(outputStream.toByteArray(),headers, HttpStatus.OK);
     }
 
 // Only email id is allowed as username
