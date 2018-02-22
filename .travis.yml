@@ -1,3 +1,4 @@
+
 language: java
 jdk:
 - oraclejdk8
@@ -28,7 +29,9 @@ after_success:
   - pwd
   - ls -al
   - mkdir codedeploy_artifacts
-  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/cloudformation/codedeploy
+  - cp infrastructure/aws/codedeploy/*.sh
+  - cp infrastruture/aws/codedeploy/*.yml
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war *.sh *.yml
   - ls -al
   - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy_artifacts/
   - ls -al
