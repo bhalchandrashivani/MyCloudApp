@@ -30,7 +30,7 @@ after_success:
   - mkdir codedeploy_artifacts
   - cp infrastructure/aws/codedeploy/*.sh .
   - cp infrastruture/aws/codedeploy/*.yml .
-  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war *.sh *.yml
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war *.sh appspec.yml
   - ls -al
   - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy_artifacts/
   - ls -al
