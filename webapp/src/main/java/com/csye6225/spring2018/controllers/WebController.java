@@ -21,7 +21,8 @@ public class WebController {
 
     @RequestMapping("/")
     public String index(HttpServletRequest request) {
-        logger.info("Loading home page.");
+        //logger.info("Loading home page.");
+        logger.warn("Loading home page ");
         //HttpSession session = request.getSession();
 
        // if (session.getAttribute("loggedInUser") == null) {
