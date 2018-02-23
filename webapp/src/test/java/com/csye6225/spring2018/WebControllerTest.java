@@ -1,8 +1,6 @@
 package com.csye6225.spring2018;
 
 import com.csye6225.spring2018.model.Account;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.LogManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -20,12 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 //import com.csye6225.spring2018
 import org.junit.Assert;
@@ -36,7 +35,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebControllerTest {
 
     private Account myAccount;
-    //private static org.apache.log4j.Logger logger = LogManager.getLogger(WebControllerTest.class);
+    private static Logger logger = LogManager.getLogger(WebControllerTest.class);
 
     @Before
     public void setUp() {
@@ -48,12 +47,12 @@ public class WebControllerTest {
     public void simpleCheck() {
         int a = 1 + 1;
         Assert.assertEquals(2, a);
-
+        logger.error(" test test tsestt");
     }
 
     @Test
     public void TestEncryption() {
-        //logger.info("Encrption Test is starting..");
+        logger.info("Encrption Test is starting..");
 
         String hashedPassword = myAccount.passwordEncrption(myAccount.getPassword());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -61,11 +60,11 @@ public class WebControllerTest {
 
         if(hashedPassword.equals(secondhashedPassword))
         {
-            //logger.error("Something wrong with password hashing test");
+            logger.error("Something wrong with password hashing test");
         }
         else
         {
-            //logger.info("Encrption Test is Successfull");
+            logger.info("Encrption Test is Successfull");
         }
         Assert.assertNotEquals(hashedPassword, secondhashedPassword);
 
