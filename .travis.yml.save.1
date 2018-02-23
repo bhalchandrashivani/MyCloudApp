@@ -28,7 +28,7 @@ after_success:
   - pwd
   - ls -al
   - mkdir codedeploy_artifacts
-  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/cloudformation/codedeploy
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/codedeploy
   - ls -al
   - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy_artifacts/
   - ls -al
@@ -42,7 +42,7 @@ after_success:
 
 deploy:
   - provider: s3
-    local_dir: codedeploy_artifacts
+    local_dir: codedeploy_articfacts
     bucket: $s3_bucket
     region: us-east-1
     skip_cleanup: true
@@ -50,5 +50,3 @@ deploy:
     secret_access_key: $secret_access_key
     on:
       branch: demo
-
-
