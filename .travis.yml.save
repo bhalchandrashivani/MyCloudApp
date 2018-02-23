@@ -1,0 +1,38 @@
+language: java
+jdk:
+- oraclejdk8
+
+sudo: false
+install: true
+
+branches:
+  only:
+   -$branch
+
+script:
+  - pwd
+  - cd webapp
+  - ./gradlew build
+  - cd build/libs
+  -ls -al
+  - cd webapp
+  - ./gradlew war
+  - cd ..
+
+notifications:
+  username:
+    recipients:
+      - chandra.ro@husky.neu.edu,bhalchandra.s@husky.neu.edu,bahcivan.a@husky.neu.edu,siddiqui.d@husky.neu.edu
+after_success:
+  - mkdir codedeploy
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war infrastructure/aws/codedeploy/appspec.yml
+  - ls -al
+  - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy/
+  - ls -al
+  - pwd
+  - cd codedeploy
+  - ls -al
+  - pwd
+  - cd ..
+  - pwd
+  - ls -al
