@@ -48,11 +48,12 @@ public class WebControllerTest {
         int a = 1 + 1;
         Assert.assertEquals(2, a);
         logger.error(" test test tsestt");
+        System.out.println("  test results is success");
     }
 
     @Test
     public void TestEncryption() {
-        logger.info("Encrption Test is starting..");
+        logger.info("Encryption Test is starting..");
 
         String hashedPassword = myAccount.passwordEncrption(myAccount.getPassword());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -61,10 +62,12 @@ public class WebControllerTest {
         if(hashedPassword.equals(secondhashedPassword))
         {
             logger.error("Something wrong with password hashing test");
+            System.out.println("Something wrong with password hashing test");
         }
         else
         {
             logger.info("Encrption Test is Successfull");
+            System.out.println("Encrption Test is Successfull");
         }
         Assert.assertNotEquals(hashedPassword, secondhashedPassword);
 
