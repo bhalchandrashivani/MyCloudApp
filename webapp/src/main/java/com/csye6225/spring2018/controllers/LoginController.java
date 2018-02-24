@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -104,7 +101,8 @@ public class LoginController {
         return "403";
     }
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "/home/danish/csye6225/dev/webapp2/src/main/resources/images/";
+
+    private static String UPLOADED_FOLDER = "/home/danish/csye6225/dev/webapp/src/main/resources/images/";
    // private static String UPLOADED_FOLDER = "/home/shivani/Shivani/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
 
     @PostMapping("/upload")
@@ -193,6 +191,15 @@ public class LoginController {
 
                     Path path = Paths.get(imagePathfromDbToDelete);
                     user.setImagepath(path.toString());
+                    File file = new File(imagepathfromDb);
+                    if(file.delete())
+                    {
+                        System.out.println("File deleted successfully");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to delete the file");
+                    }
                     userService.saveUser(user);
                     model.addAttribute("username", email);
                     model.addAttribute("aboutme",aboutmefromDb);

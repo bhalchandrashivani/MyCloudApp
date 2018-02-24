@@ -46,7 +46,7 @@ public class UserService {
         account.setImagepath(account.getImagepath());
         accountRepository.save(account);
     }
-    private static String UPLOAD_PATH = "/home/danish/csye6225/dev/webapp2/src/main/resources/images";
+    private static String UPLOAD_PATH = "/home/danish/csye6225/dev/webapp/src/main/resources/images";
     public Resource findImage(Account account){
         String impath = account.getImagepath();
         System.out.println("impath>> "+impath);
