@@ -35,7 +35,7 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::[Ref : s3Bucket]" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me" ]
                } ]
             },
             "Roles": [ {
@@ -121,7 +121,7 @@
                   "Action"   : [
                      "s3:PutObject"
                   ],
-                  "Resource" :[ "arn:aws:s3:::[Ref : s3Bucket]" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me" ]
                } ]
             }
          }
