@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
+import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,25 +33,33 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebControllerTest {
 
     private Account myAccount;
-    private static Logger logger = LogManager.getLogger(WebControllerTest.class);
+    private static Logger logger = Logger.getLogger(WebControllerTest.class);
 
     @Before
     public void setUp() {
         myAccount = new Account();
         myAccount.setPassword("123456");
+        logger.info(" set up test test tsestt");
     }
 
     @Test
     public void simpleCheck() {
         int a = 1 + 1;
         Assert.assertEquals(2, a);
-        logger.error(" test test tsestt");
-        System.out.println("  test results is success");
+        logger.info(" test test tsestt");
+        logger.debug("adsasd");
+        logger.warn("sample warn message");
+        //logger.error("sample error message");
+
+        //System.out.println("  test results is success");
     }
 
     @Test
     public void TestEncryption() {
+       // logger.error("1 sample error message in TestEncryption");
+
         logger.info("Encryption Test is starting..");
+
 
         String hashedPassword = myAccount.passwordEncrption(myAccount.getPassword());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -61,13 +67,13 @@ public class WebControllerTest {
 
         if(hashedPassword.equals(secondhashedPassword))
         {
-            logger.error("Something wrong with password hashing test");
+            logger.info("Something wrong with password hashing test");
             System.out.println("Something wrong with password hashing test");
         }
         else
         {
-            logger.info("Encrption Test is Successfull");
-            System.out.println("Encrption Test is Successfull");
+            logger.debug("Encryption Test is Successfull");
+            //System.out.println("Encryption Test is Successfull");
         }
         Assert.assertNotEquals(hashedPassword, secondhashedPassword);
 

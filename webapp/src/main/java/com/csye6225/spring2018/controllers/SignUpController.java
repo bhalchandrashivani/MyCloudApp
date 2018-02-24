@@ -8,6 +8,7 @@ import com.csye6225.spring2018.AccountValidator;
 import com.csye6225.spring2018.model.Account;
 import com.csye6225.spring2018.services.UserService;
 import com.google.gson.JsonObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ import java.util.regex.Pattern;
 @Controller
 public class SignUpController {
 
+    private static Logger logger = Logger.getLogger(SignUpController.class);
+
     @Autowired
     private UserService userService;
 
@@ -37,8 +40,11 @@ public class SignUpController {
 
     @RequestMapping(value="/signup",method= RequestMethod.GET)
     public String registerUser(Model model){
-        System.out.println("Say Register");
         model.addAttribute("account",new Account());
+        logger.info("signup info....");
+        logger.debug("signup debug...");
+        logger.warn("signup war....");
+        logger.error("signup error message");
         return "signup";
 
     }
