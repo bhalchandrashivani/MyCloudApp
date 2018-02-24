@@ -14,7 +14,7 @@ files:
     destination: /home/ubuntu
   - source: ./validateService.sh
     destination: /home/ubuntu
-  - source: ./build/libs/ROOT.war
+  - source: .webapp/build/libs/ROOT.war
     destination: /var/lib/tomcat8/webapps 
 
 hooks:
