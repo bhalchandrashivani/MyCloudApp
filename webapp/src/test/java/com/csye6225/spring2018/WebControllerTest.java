@@ -49,9 +49,9 @@ public class WebControllerTest {
         logger.info(" test test tsestt");
         logger.debug("adsasd");
         logger.warn("sample warn message");
-        //logger.error("sample error message");
+        logger.error("sample error message");
 
-        //System.out.println("  test results is success");
+        System.out.println("  test results is success");
     }
 
     @Test
