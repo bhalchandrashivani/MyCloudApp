@@ -9,7 +9,7 @@ script:
   - ./webapp/gradlew build
   - cd webapp
   - ./gradlew war
-  - ./gradlew test
+  - ./gradlew test --info
   
 notifications:
   username:
