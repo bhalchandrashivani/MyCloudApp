@@ -75,6 +75,7 @@
                                 "sudo apt-get install ruby -y \n",
                                 "sudo apt-get install wget -y \n",
                                 "sudo apt-get install python -y \n",
+                                "sudo apt-get install mysql-server -y \n",
                                 "sudo apt-get update \n",
                                 "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
                                 "sudo chmod +x ./install \n",
