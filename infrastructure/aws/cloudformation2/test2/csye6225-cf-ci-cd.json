@@ -21,7 +21,7 @@
       "s3Bucket" : {
          "Type" : "AWS::S3::Bucket",
          "Properties" : {
-            "BucketName" : "code-deploy.chandraroo.me/*"
+            "BucketName" : "code-deploy.bhalchandracicd.me"
          }
       },
       "RolePolicies": {
@@ -36,7 +36,7 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me/*" ]
                } ]
             },
             "Roles": [ {
@@ -76,7 +76,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Code-Deploy",
-            "Users" : ["testTravis"],
+            "Users" : ["travisci_lab"],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -116,7 +116,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Upload-To-S3",
-            "Users" : ["testTravis"],
+            "Users" : ["travisci_lab"],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -124,7 +124,7 @@
                   "Action"   : [
                      "s3:PutObject"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me/*" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me/*" ]
                } ]
             }
          }
