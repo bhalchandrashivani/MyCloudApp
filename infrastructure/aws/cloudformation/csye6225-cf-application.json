@@ -65,31 +65,46 @@
           "SecurityGroupIds" : [{"Fn::ImportValue" : "csye6225-cloud-Networking-web-security-group"}],
           "SubnetId" : {"Fn::ImportValue" : "csye6225-cloud-Networking-web-subnet"},
           "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash -xe \n",
-                                "sudo apt-get update \n",
-                                "sudo apt-get install openjdk-8-jdk -y\n",
-                                "sudo apt-get install ruby -y \n",
-                                "sudo apt-get install wget -y \n",
-                                "sudo apt-get install python -y \n",
-                                "sudo apt-get install mysql-server -y \n",
-                                "sudo apt-get update \n",
-                                "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
-                                "sudo chmod +x ./install \n",
-                                "sudo ./install auto \n",
-                                "sudo service codedeploy-agent start \n",
-                                "sudo apt-get install tomcat8 -y \n",
-                                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -Dspring.profiles.active=aws\\\"\" >> /etc/default/tomcat8 \n",
-                                "sudo service tomcat8 restart \n"
-                            ]
-                        ]
-                      }
-                    }
+            "Fn::Base64": {
+              "Fn::Join": [
+                "",
+                [
+                  "#!/bin/bash -xe \n",
+                  "sudo apt-get update \n",
+                  "sudo apt-get install openjdk-8-jdk -y\n",
+                  "sudo apt-get install ruby -y \n",
+                  "sudo apt-get install wget -y \n",
+                  "sudo apt-get install python -y \n",
+                  "sudo apt-get install mysql-server -y \n",
+                  "sudo apt-get update \n",
+                  "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                  "sudo chmod +x ./install \n",
+                  "sudo ./install auto \n",
+                  "sudo service codedeploy-agent start \n",
+                  "sudo apt-get install tomcat8 -y \n",
+                  "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -Dspring.datasource.username=csye6225master -Dspring.datasource.password=csye6225password  -Dspring.profiles.active=aws\\\"\" >> /etc/default/tomcat8 ",
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "echo 'JAVA_OPTS=\"${JAVA_OPTS} -Dspring.datasource.url=\\\"jdbc:mysql://",
+                        {
+                          "Fn::GetAtt": [
+                            "myRDSInstance",
+                            "Endpoint.Address"
+                          ]
+                        },
+                        ":3306/csye6225\\\"\"' >> /etc/default/tomcat8"
+                      ]
+                    ]
+                  },
+                  "sudo service tomcat8 restart \n"
+                ]
+              ]
+            }
+          }
         }
-    },
+      },
     
     "myDBSubnetGroup" : {
       "Type" : "AWS::RDS::DBSubnetGroup",
@@ -103,9 +118,9 @@
     "myRDSInstance" : {
       "Type" : "AWS::RDS::DBInstance",
       "Properties" : {
-         "DBName" : "csye6225",
-         "AllocatedStorage" : "20",
-         "Engine" : "MySQL",
+        "DBName" : "csye6225",
+        "AllocatedStorage" : "20",
+        "Engine" : "MySQL",
         "EngineVersion" : "5.6.37",
         "DBInstanceClass" : "db.t2.medium",
         "MultiAZ" : false,
