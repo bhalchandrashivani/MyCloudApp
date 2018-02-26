@@ -21,7 +21,7 @@
       "s3Bucket" : {
          "Type" : "AWS::S3::Bucket",
          "Properties" : {
-            "BucketName" : "code-deploy.chandraroo.me/*"
+            "BucketName" : "code-deploy.siddiquid.me/*"
          }
       },
       "RolePolicies": {
@@ -36,7 +36,7 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.siddiquid.me" ]
                } ]
             },
             "Roles": [ {
@@ -124,7 +124,7 @@
                   "Action"   : [
                      "s3:PutObject"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me/*" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.siddiquid.me/*" ]
                } ]
             }
          }
