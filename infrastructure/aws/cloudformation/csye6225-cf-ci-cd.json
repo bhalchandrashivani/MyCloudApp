@@ -21,7 +21,7 @@
       "s3Bucket" : {
          "Type" : "AWS::S3::Bucket",
          "Properties" : {
-            "BucketName" : "code-deploy.chandraroo.me/*"
+            "BucketName" : "code-deploy.chandraroo.me"
          }
       },
       "RolePolicies": {
