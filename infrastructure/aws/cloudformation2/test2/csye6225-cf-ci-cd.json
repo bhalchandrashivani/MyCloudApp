@@ -14,13 +14,14 @@
                   "Action": [ "sts:AssumeRole" ]
                } ]
             },
-            "Path": "/"
+            "Path": "/",
+            "RoleName" : "CodeDeployEC2ServiceRole"
          }
       },
       "s3Bucket" : {
          "Type" : "AWS::S3::Bucket",
          "Properties" : {
-            "BucketName" : "code-deploy.bhalchandracicd.me"
+            "BucketName" : "code-deploy.chandraroo.me/*"
          }
       },
       "RolePolicies": {
@@ -35,7 +36,7 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me/*" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me" ]
                } ]
             },
             "Roles": [ {
@@ -57,13 +58,15 @@
                   "Action": [ "sts:AssumeRole" ]
                } ]
             },
-            "Path": "/"
+            "Path": "/",
+            "RoleName" : "CodeDeployServiceRole"
          }
       },
         "CodeDeployEC2ServiceRoleProfile": {
          "Type": "AWS::IAM::InstanceProfile",
          "Properties": {
             "Path": "/",
+            "InstanceProfileName": "CodeDeployEC2ServiceRoleProfile",
             "Roles": [ {
                "Ref": "CodeDeployEC2ServiceRole"
             } ]
@@ -73,7 +76,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Code-Deploy",
-            "Users" : ["travisci_lab"],
+            "Users" : ["testTravis"],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -113,7 +116,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Upload-To-S3",
-            "Users" : ["travisci_lab"],
+            "Users" : ["testTravis"],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -121,7 +124,7 @@
                   "Action"   : [
                      "s3:PutObject"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.bhalchandracicd.me/*" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me/*" ]
                } ]
             }
          }
@@ -140,6 +143,7 @@
          			"Ref": "CodeDeployApplication"
          		},
                "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+               "DeploymentGroupName" : "CodeDeployApplicationGroup",
          		"DeploymentStyle": {
          			"DeploymentType": "IN_PLACE",
          			"DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
