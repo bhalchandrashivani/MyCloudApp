@@ -18,7 +18,7 @@ hooks:
    - location: ./applicationStop.sh
      timeout: 180
      runas: ubuntu
- BeforeInstall:
+  BeforeInstall:
    - location: ./beforeInstall.sh
      timeout: 180
      runas: ubuntu
