@@ -36,7 +36,7 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me" ]
+                  "Resource" :[ "arn:aws:s3:::code-deploy.chandraroo.me/*" ]
                } ]
             },
             "Roles": [ {
