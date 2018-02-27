@@ -5,7 +5,10 @@ ig_const=InternetGateway
 route_table_const=route-table
 vpcTag=$s_name$c_const$vpc_const
 
-EC2_ID=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$s_name" --query 'Reservations[*].Instances[*].{id:InstanceId}' --output text)
+echo "Enter EC2 Tag name to disable API termination"
+read api
+
+EC2_ID=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$api" --query 'Reservations[*].Instances[*].{id:InstanceId}' --output text)
 
 echo "Identifying EC2..."
 
