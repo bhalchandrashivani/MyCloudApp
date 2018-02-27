@@ -104,7 +104,7 @@ public class LoginController {
         return "403";
     }
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "/home/ahmet/csye6225/dev/webapp/src/main/resources/images/";
+    private static String UPLOADED_FOLDER = "/home/rscx/csye6225/dev/webapp/src/main/resources/images/";
    // private static String UPLOADED_FOLDER = "/home/shivani/Shivani/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
 
     @PostMapping("/upload")
