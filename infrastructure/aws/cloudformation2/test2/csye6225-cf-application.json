@@ -75,15 +75,13 @@
                                 "sudo apt-get install ruby -y \n",
                                 "sudo apt-get install wget -y \n",
                                 "sudo apt-get install python -y \n",
-                                "sudo apt-get install mysql-server -y \n",
-                                "sudo apt-get update \n",
+				"sudo apt-get update \n",
                                 "sudo wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
                                 "sudo chmod +x ./install \n",
                                 "sudo ./install auto \n",
                                 "sudo service codedeploy-agent start \n",
                                 "sudo apt-get install tomcat8 -y \n",
-				"sudo chmod -R 777 /var/lib/tomcat8 \n",
-                                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -Dspring.datasource.username=csye6225master -Dspring.datasource.password=csye6225password  -Dspring.profiles.active=aws\\\"\" >> /etc/default/tomcat8 ",
+                                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -Dspring.datasource.username=csye6225master -Dspring.datasource.password=csye6225password  -Dspring.profiles.active=aws\\\"\" >> /etc/default/tomcat8 \n",
                                 {
                                   "Fn::Join": [
                                         "",
