@@ -6,6 +6,9 @@
     },
     "S3BucketTag": {
       "Type": "String"
+    },
+      "EC2DeployTag": {
+      "Type": "String"
     }
   },
    "Resources": {
@@ -163,7 +166,7 @@
          		"Ec2TagFilters" : [ {
          			"Key" : "Name",
          			"Type" : "KEY_AND_VALUE",
-                    "Value" : "EC2DeployTag"
+                    "Value" : { "Ref": "EC2DeployTag"}
                 }],
                 "ServiceRoleArn" : {
                 	"Fn::GetAtt": [
