@@ -1,5 +1,13 @@
 {
    "AWSTemplateFormatVersion": "2010-09-09",
+   "Parameters": {
+    "usernameTag": {
+      "Type": "String"
+    },
+    "S3BucketTag": {
+      "Type": "String"
+    }
+  },
    "Resources": {
       "CodeDeployEC2ServiceRole": {
          "Type": "AWS::IAM::Role",
@@ -21,7 +29,7 @@
       "s3Bucket" : {
          "Type" : "AWS::S3::Bucket",
          "Properties" : {
-            "BucketName" : "code-deploy.siddiquid.me/*"
+            "BucketName" :{ "Ref": "S3BucketTag" }
          }
       },
       "RolePolicies": {
@@ -36,7 +44,9 @@
                      "s3:Get*",
                      "s3:List*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.siddiquid.me" ]
+                  "Resource": [{
+                     "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "s3Bucket"},"/*"]]
+                  }]
                } ]
             },
             "Roles": [ {
@@ -76,7 +86,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Code-Deploy",
-            "Users" : ["testTravis"],
+            "Users" : [{ "Ref": "usernameTag" }],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -85,7 +95,7 @@
                      "codedeploy:RegisterApplicationRevision",
                      "codedeploy:GetApplicationRevision"
                   ],
-                  "Resource" :[ "arn:aws:codedeploy:us-east-1:413944663154:application:CSYE6225WebappCodeDeploy" ]
+                  "Resource" :[ "arn:aws:codedeploy:us-east-1:826171571085:application:CSYE6225WebappCodeDeploy" ]
                },
                {
                   "Effect": "Allow",
@@ -103,9 +113,9 @@
                      "codedeploy:GetDeploymentConfig"
                   ],
                   "Resource": [
-                     "arn:aws:codedeploy:us-east-1:413944663154:deploymentconfig:CodeDeployDefault.OneAtATime",
-                     "arn:aws:codedeploy:us-east-1:413944663154:deploymentconfig:CodeDeployDefault.HalfAtATime",
-                     "arn:aws:codedeploy:us-east-1:413944663154:deploymentconfig:CodeDeployDefault.AllAtOnce"
+                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.OneAtATime",
+                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.HalfAtATime",
+                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.AllAtOnce"
                   ]
                }
             ]
@@ -116,7 +126,7 @@
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "Travis-Upload-To-S3",
-            "Users" : ["testTravis"],
+            "Users" : [{ "Ref": "usernameTag" }],
             "PolicyDocument" : {
                "Version" : "2012-10-17",
                "Statement": [ {
@@ -124,7 +134,9 @@
                   "Action"   : [
                      "s3:PutObject"
                   ],
-                  "Resource" :[ "arn:aws:s3:::code-deploy.siddiquid.me/*" ]
+                  "Resource": [{
+                     "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "s3Bucket"},"/*"]]
+                  }]
                } ]
             }
          }
