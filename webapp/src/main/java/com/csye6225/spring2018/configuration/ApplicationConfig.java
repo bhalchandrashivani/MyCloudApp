@@ -1,5 +1,6 @@
 package com.csye6225.spring2018.configuration;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.csye6225.spring2018.SpringBootWebApplication;
@@ -39,22 +40,34 @@ public class ApplicationConfig {
 //        return ppc;
 //    }
 
-   // @Bean
-   // public AWSCredentials credential() {
-   //     return new BasicAWSCredentials(awsId, awsKey);
-   // }
+//    @Bean
+//    public AWSCredentials credential() {
+//        return new BasicAWSCredentials(awsId, awsKey);
+//    }
+//    @Bean
+//    AWSCredentialsProvider credProvider() {
+//        return new InstanceProfileCredentialsProvider();
+//    }
 
    // @Bean
     //public AmazonS3 s3client() {
 
     //    return new AmazonS3Client(credential());
     //}
+//    @Bean
+//    public AmazonS3 s3() {
+//
+//        AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+//                .withCredentials(new InstanceProfileCredentialsProvider(true))
+//                .build();
+//        return s3;
+//    }
     @Bean
     public AmazonS3 s3() {
-
-        AmazonS3 s3 = AmazonS3ClientBuilder.standard()
-                .withCredentials(new InstanceProfileCredentialsProvider(false))
+        InstanceProfileCredentialsProvider provider
+                = new InstanceProfileCredentialsProvider(true);
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(provider)
                 .build();
-        return s3;
     }
 }

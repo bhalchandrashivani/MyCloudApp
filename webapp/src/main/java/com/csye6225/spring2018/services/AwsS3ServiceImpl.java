@@ -39,7 +39,6 @@ public class AwsS3ServiceImpl implements AwsS3Service {
     private AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
 
 
-
     @Value("${aws_namecard_bucket}")
     private String nameCardBucket;
 
@@ -68,6 +67,7 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         endpointUrl="https://s3.amazonaws.com";
         fileUrl = endpointUrl + "/" + nameCardBucket + "/" + fileName;
         //String fileNameInS3 = filename;
+           // s3.putObject(nameCardBucket,fileName,file);
             s3.putObject(new PutObjectRequest(nameCardBucket,
                     fileName, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));

@@ -57,6 +57,28 @@
             } ]
          }
       },
+	"RolePolicies2": {
+         "Type": "AWS::IAM::Policy",
+         "Properties": {
+            "PolicyName" : "EC2-S3",
+            "PolicyDocument" : {
+               "Version" : "2012-10-17",
+               "Statement": [ {
+                  "Effect"   : "Allow",
+                  "Action"   : [
+                     "s3:Get*",
+                     "s3:List*",
+	             "s3:Put*",
+		     "s3:Delete*"
+                  ],
+                  "Resource" :[ "arn:aws:s3:::web-app.bhalchandracicd.me/*" ]
+               } ]
+            },
+            "Roles": [ {
+               "Ref": "CodeDeployEC2ServiceRole"
+            } ]
+         }
+      },
          "CodeDeployServiceRole": {
          "Type": "AWS::IAM::Role",
          "Properties": {
