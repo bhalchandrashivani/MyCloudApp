@@ -96,6 +96,12 @@
                       },
                       ":3306/csye6225\\\"\"' >> /etc/default/tomcat8 \n"
                     ]
+                  ],
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo 'JAVA_OPTS=\"${JAVA_OPTS} -Dspring.name=web-app.bhalchandras.me\"' >> /etc/default/tomcat8 \n"
+                    ]
                   ]
                 },
                 "sudo service tomcat8 restart \n"
