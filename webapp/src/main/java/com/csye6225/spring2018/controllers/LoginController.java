@@ -214,6 +214,7 @@ public class LoginController {
                 String imagePathfromDbToDelete  = "";
                 Path path = Paths.get(imagePathfromDbToDelete);
                 user.setImagepath(path.toString());
+                System.out.println("inside aws " + path);
                 userService.saveUser(user);
 
                 awsS3Service.deleteFileFromS3Bucket(imagepathfromDb);
