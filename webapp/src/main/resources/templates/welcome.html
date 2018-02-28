@@ -24,11 +24,14 @@
         <label style="font-size: larger; color:blue">Profile picture</label>
         <!--<img th:each="i :${imagePath}" th:src="${i}"/>1-->
         <p>
-           <img th:src="@{/profilepic}"/>
-           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>!-->
+          <!-- <img th:src="@{/profilepic}"/>!-->
+           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>
+           th:src="${i}"
+           !-->
         </p>
-    <img th:each="i :${imagePath}" th:src="${i}"/>
-        <div>
+    <img th:each="i :${imagePath}" th:src="${(i != '') ? i : &quot;@{'http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'}&quot;}"/>
+
+    <div>
             <label >
                 Upload new picture
                 <input  type="file" class="manual-file-chooser width-full height-full ml-0 js-manual-file-chooser" name = "file"/>
