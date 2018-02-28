@@ -100,7 +100,7 @@
                   ]
                   
                 },
-                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -DBucketName=web-app.bhalchandras.me\\\"\" >> /etc/default/tomcat8 \n",
+                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -DbucketName=",{"Ref" : "s3Bucket"},"\\\"\" >> /etc/default/tomcat8 \n",
                 "sudo service tomcat8 restart \n"
               ]
             ]

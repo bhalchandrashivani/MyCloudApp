@@ -57,7 +57,7 @@
             } ]
          }
       },
-	"RolePolicies2": {
+	"RolePolicies4": {
          "Type": "AWS::IAM::Policy",
          "Properties": {
             "PolicyName" : "EC2-S3",
@@ -68,10 +68,10 @@
                   "Action"   : [
                      "s3:Get*",
                      "s3:List*",
-	             "s3:Put*",
-		     "s3:Delete*"
+			         "s3:Put*",
+				     "s3:Delete*"
                   ],
-                  "Resource" :[ "arn:aws:s3:::web-app.bhalchandracicd.me/*" ]
+                  "Resource" :[ "arn:aws:s3:::web-app.bhalchandras.me/*" ]
                } ]
             },
             "Roles": [ {
