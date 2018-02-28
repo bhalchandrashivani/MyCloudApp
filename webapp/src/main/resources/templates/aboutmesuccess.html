@@ -12,7 +12,7 @@
 
 <h1 style="color:blue" >This is Public Profile of </h1>
 <h1 style="color:blue" th:each="account :${username}"> <span th:text="${account}"></span>  </h1>
-<hi th:each="am :${aboutme}" th:text="${am}"></hi>
+<hi style = "color: crimson" th:each="am :${aboutme}" th:text="${am}"></hi>
 
 <p>
     <a href="/aboutme">Go Back to Profiles page</a>
