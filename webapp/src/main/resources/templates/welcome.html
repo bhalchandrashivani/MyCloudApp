@@ -24,10 +24,11 @@
         <label style="font-size: larger; color:blue">Profile picture</label>
         <!--<img th:each="i :${imagePath}" th:src="${i}"/>1-->
         <p>
-           <img th:src="@{/profilepic}"/>
-           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>!-->
+            <!--<img th:src="@{/profilepic}" onerror="this.src='http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'" th:width="200" th:height="200"/>!-->
         </p>
-    <img th:each="i :${imagePath}" th:src="${i}"/>
+    <!--<img th:each="i :${imagePath}" th:src="${i}"/>!-->
+    <img th:each="i :${imagePath}" th:src="${((i != null) && (#strings.isEmpty(i))) ? i : &quot;@{'http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'}&quot;}"/>
+
         <div>
             <label >
                 Upload new picture
