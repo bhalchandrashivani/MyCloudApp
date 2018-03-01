@@ -71,7 +71,7 @@ Add additional notes about how to deploy this on a live system
 * Gradle - Dependency Management
 * MySQL5 - Used to store data
 
-## Continuous Integration
+### Continuous Integration
 
 We used Travis CI.
 
