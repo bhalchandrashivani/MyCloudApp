@@ -9,7 +9,13 @@
     },
       "EC2DeployTag": {
       "Type": "String"
-    }
+    },
+    "AccTag": {
+      "Type": "String"
+    },
+    "webTag": {
+      "Type": "String"
+   }
   },
    "Resources": {
       "CodeDeployEC2ServiceRole": {
@@ -49,6 +55,30 @@
                   ],
                   "Resource": [{
                      "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "s3Bucket"},"/*"]]
+                  }]
+               } ]
+            },
+            "Roles": [ {
+               "Ref": "CodeDeployEC2ServiceRole"
+            } ]
+         }
+      },
+	"RolePolicies4": {
+         "Type": "AWS::IAM::Policy",
+         "Properties": {
+            "PolicyName" : "EC2-S3",
+            "PolicyDocument" : {
+               "Version" : "2012-10-17",
+               "Statement": [ {
+                  "Effect"   : "Allow",
+                  "Action"   : [
+                     "s3:Get*",
+                     "s3:List*",
+                     "s3:Put*",
+                     "s3:Delete*"
+                  ],
+                  "Resource": [{
+                     "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "webTag"},"/*"]]
                   }]
                } ]
             },
@@ -98,7 +128,7 @@
                      "codedeploy:RegisterApplicationRevision",
                      "codedeploy:GetApplicationRevision"
                   ],
-                  "Resource" :[ "arn:aws:codedeploy:us-east-1:826171571085:application:CSYE6225WebappCodeDeploy" ]
+                  "Resource" :[{"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", { "Ref": "AccTag"},":application:CSYE6225WebappCodeDeploy"]]} ]
                },
                {
                   "Effect": "Allow",
@@ -116,9 +146,9 @@
                      "codedeploy:GetDeploymentConfig"
                   ],
                   "Resource": [
-                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.OneAtATime",
-                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.HalfAtATime",
-                     "arn:aws:codedeploy:us-east-1:826171571085:deploymentconfig:CodeDeployDefault.AllAtOnce"
+                     {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", { "Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.OneAtATime"]]},
+                     {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", { "Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.HalfAtATime"]]},
+                     {"Fn::Join": [ "", ["arn:aws:codedeploy:us-east-1:", { "Ref": "AccTag"},":deploymentconfig:CodeDeployDefault.AllAtOnce"]]}
                   ]
                }
             ]

@@ -24,34 +24,36 @@
         <label style="font-size: larger; color:blue">Profile picture</label>
         <!--<img th:each="i :${imagePath}" th:src="${i}"/>1-->
         <p>
-            <!--<img th:src="@{/profilepic}" onerror="this.src='http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'" th:width="200" th:height="200"/>!-->
+          <!-- <img th:src="@{/profilepic}"/>!-->
+           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>
+           th:src="${i}"
+           !-->
         </p>
-    <!--<img th:each="i :${imagePath}" th:src="${i}"/>!-->
-    <!--<img th:each="i :${imagePath}" th:src="${((i != null) || (#strings.isEmpty(i))) ? i : &quot;@{'http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'}&quot;}"/>
-   !-->
-        <img th:each="i :${imagePath}" th:src="${(i != '') ? i : &quot;@{'http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'}&quot;}" />
+    <p>
+        <img th:each="i :${imagePath}" th:src="${i}"/>
+    </p>
 
-   <div>
-           <label >
-               Upload new picture
-               <input  type="file" class="manual-file-chooser width-full height-full ml-0 js-manual-file-chooser" name = "file"/>
-           </label>
-       </div>
-       <input style="color: green" type="submit" value="Upload" />
-   </form>
-   <form th:action="@{/deletephoto}" method="post">
-       <input style="color: crimson" type="submit" value="Delete photo" />
-   </form>
-   <p>
-       <label style="color: blue ; font-size: larger" >About Me:</label>
-       <p>
-           <label style="color: crimson" th:each="am :${aboutme}" th:text="${am}"></label>
-       </p>
-   </p>
+    <div>
+            <label >
+                Upload new picture
+                <input  type="file" class="manual-file-chooser width-full height-full ml-0 js-manual-file-chooser" name = "file"/>
+            </label>
+        </div>
+        <input style="color: green" type="submit" value="Upload" />
+    </form>
+    <form th:action="@{/deletephoto}" method="post">
+        <input style="color: crimson" type="submit" value="Delete photo" />
+    </form>
+    <p>
+        <label style="color: blue ; font-size: larger" >About Me:</label>
+        <p>
+            <label style="color: crimson" th:each="am :${aboutme}" th:text="${am}"></label>
+        </p>
+    </p>
 
-   <p>
-       <form action="/updateaboutmebutton" method="GET">
-          <!-- Update about me: <input type="text" name="aboutme" maxlength="160"/>!-->
+    <p>
+        <form action="/updateaboutmebutton" method="GET">
+           <!-- Update about me: <input type="text" name="aboutme" maxlength="160"/>!-->
             <input style="color: blue" type="submit" value="Update Aboutme"/>
         </form>
     </p>

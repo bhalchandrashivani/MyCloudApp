@@ -3,6 +3,8 @@ package com.csye6225.spring2018.services;
 
 import com.csye6225.spring2018.model.Account;
 import com.csye6225.spring2018.repository.AccountRepository;
+//import com.csye6225.spring2018.repository.UserRepository;
+import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -15,11 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-//import com.csye6225.spring2018.repository.UserRepository;
-
 @Service
 public class UserService {
-    //@Qualifier()
     @Autowired
     private AccountRepository accountRepository;
     private ResourceLoader resourceLoader;
@@ -46,10 +45,9 @@ public class UserService {
         account.setImagepath(account.getImagepath());
         accountRepository.save(account);
     }
-    private static String UPLOAD_PATH = "/home/danish/csye6225/dev/webapp/src/main/resources/images";
+    private static String UPLOAD_PATH = "upload-dir";
     public Resource findImage(Account account){
         String impath = account.getImagepath();
-        System.out.println("impath>> "+impath);
         return resourceLoader.getResource("file:" + UPLOAD_PATH + "/ "+impath);
     }
     public void updateImage(MultipartFile File) throws Exception{

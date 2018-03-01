@@ -1,3 +1,4 @@
+
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Parameters": {
@@ -97,7 +98,9 @@
                       ":3306/csye6225\\\"\"' >> /etc/default/tomcat8 \n"
                     ]
                   ]
+                  
                 },
+                "sudo echo \"JAVA_OPTS=\\\"\\${JAVA_OPTS} -DbucketName=",{"Ref" : "s3Bucket"},"\\\"\" >> /etc/default/tomcat8 \n",
                 "sudo service tomcat8 restart \n"
               ]
             ]

@@ -23,7 +23,7 @@ read ec2tagmatchingname
 
 Iamprofilename=CodeDeployEC2ServiceRoleProfile
 
-fname=s3.csye6225-spring2018-$dname
+fname=web-app.$dname
 tld=.me
 
 echo $stack_name

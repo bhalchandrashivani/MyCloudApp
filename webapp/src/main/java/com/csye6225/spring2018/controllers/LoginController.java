@@ -20,7 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -101,8 +104,7 @@ public class LoginController {
         return "403";
     }
     //Save the uploaded file to this folder
-
-    private static String UPLOADED_FOLDER = "/home/danish/csye6225/dev/webapp/src/main/resources/images/";
+    private static String UPLOADED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
    // private static String UPLOADED_FOLDER = "/home/shivani/Shivani/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
 
     @PostMapping("/upload")
@@ -191,15 +193,6 @@ public class LoginController {
 
                     Path path = Paths.get(imagePathfromDbToDelete);
                     user.setImagepath(path.toString());
-                    File file = new File(imagepathfromDb);
-                    if(file.delete())
-                    {
-                        System.out.println("File deleted successfully");
-                    }
-                    else
-                    {
-                        System.out.println("Failed to delete the file");
-                    }
                     userService.saveUser(user);
                     model.addAttribute("username", email);
                     model.addAttribute("aboutme",aboutmefromDb);
@@ -214,7 +207,6 @@ public class LoginController {
                 String imagePathfromDbToDelete  = "";
                 Path path = Paths.get(imagePathfromDbToDelete);
                 user.setImagepath(path.toString());
-                System.out.println("inside aws " + path);
                 userService.saveUser(user);
 
                 awsS3Service.deleteFileFromS3Bucket(imagepathfromDb);
@@ -271,7 +263,6 @@ public class LoginController {
         Account user = userService.findByUsername(email);
         String userImagepathFromDb = user.getImagepath();
         String fileUrl = userImagepathFromDb;
-        System.out.println("fileUrl>> "+fileUrl);
         InputStream inputStream = new FileInputStream(userImagepathFromDb);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] picturebuffer = new byte[512];
