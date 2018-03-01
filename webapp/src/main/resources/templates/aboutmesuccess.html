@@ -8,11 +8,12 @@
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
 
-<h1 th:inline="text">User </h1>
-
-<h1 style="color:blue" >This is Public Profile of </h1>
+<h1 th:inline="text">User :Public Profile </h1>
 <h1 style="color:blue" th:each="account :${username}"> <span th:text="${account}"></span>  </h1>
-<hi th:each="am :${aboutme}" th:text="${am}"></hi>
+<p>
+    <hi style = "color: crimson; font-size: large" th:each="am :${aboutme}" th:text="${am}"></hi>
+</p>
+
 
 <p>
     <a href="/aboutme">Go Back to Profiles page</a>
@@ -21,7 +22,6 @@
 <p>
     <a href="/">Go Back to Login Page</a>
 </p>
-
 
 
 <div th:replace="fragments/footer :: footer"/>
