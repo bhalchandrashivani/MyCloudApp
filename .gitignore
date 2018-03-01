@@ -21,6 +21,12 @@ build/**/*
 webapp/out/**/*
 
 
+/home/rscx/csye6225/dev/webapp/build/resources/main/application.properties
+/home/rscx/csye6225/dev/webapp/build/resources/main/application-aws.properties
+/home/rscx/csye6225/dev/webapp/build/resources/main/amazon.properties
+/home/rscx/csye6225/dev/webapp/src/main/resources/application.properties
+/home/rscx/csye6225/dev/webapp/src/main/resources/application-aws.properties
+
 ### NetBeans ###
 nbproject/private/
 build/
