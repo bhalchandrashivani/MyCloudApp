@@ -20,6 +20,9 @@ build/**/*
 .gradle/**/*
 webapp/out/**/*
 
+/home/ahmet/csye6225/dev/webapp/src/main/resources/application.properties
+/home/ahmet/csye6225/dev/webapp/src/main/resources/application-aws.properties
+
 ### NetBeans ###
 nbproject/private/
 build/
