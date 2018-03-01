@@ -10,7 +10,7 @@ vpcTag=$s_name$c_const$vpc_const
 #echo $stack_name
 
 
-echo "Deleting networking Stack"
+echo "Deleting CICD Stack"
 aws cloudformation delete-stack --stack-name $s_name
 
 echo "..............Please wait for confirmation.."

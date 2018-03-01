@@ -29,7 +29,9 @@
            th:src="${i}"
            !-->
         </p>
-    <img th:each="i :${imagePath}" th:src="${(i != '') ? i : &quot;@{'http://www.racialjusticenetwork.co.uk/wp-content/uploads/2016/12/default-profile-picture-1.png'}&quot;}"/>
+    <p>
+        <img th:each="i :${imagePath}" th:src="${i}"/>
+    </p>
 
     <div>
             <label >
