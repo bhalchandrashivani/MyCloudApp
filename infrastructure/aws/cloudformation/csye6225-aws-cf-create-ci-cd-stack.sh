@@ -15,9 +15,10 @@ echo "Enter Account Number"
 read acnumber
 
 d=code-deploy.$cname.me
+webt=web-app.$cname.me
 
 echo $vpcTag
-stackId=$(aws cloudformation create-stack --stack-name $stackName --template-body file://csye6225-cf-ci-cd.json --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=usernameTag,ParameterValue=$user ParameterKey=S3BucketTag,ParameterValue=$d ParameterKey=EC2DeployTag,ParameterValue=$ectag ParameterKey=AccTag,ParameterValue=$acnumber --output text)
+stackId=$(aws cloudformation create-stack --stack-name $stackName --template-body file://csye6225-cf-ci-cd.json --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=usernameTag,ParameterValue=$user ParameterKey=S3BucketTag,ParameterValue=$d ParameterKey=EC2DeployTag,ParameterValue=$ectag ParameterKey=AccTag,ParameterValue=$acnumber ParameterKey=webTag,ParameterValue=$webt --output text)
 
 echo $stackIdNAMW
 
