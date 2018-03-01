@@ -15,37 +15,48 @@
 
 <p>Date/Time: <span id="datetime"></span></p>
 
-
 <script>
     var dt = new Date();
     document.getElementById("datetime").innerHTML = dt.toLocaleString();
 </script>
 
 <form th:action="@{/upload}" method="post"  enctype="multipart/form-data" accept="image/png,image/jpeg,image/jpg">
-        <label>Profile picture</label>
+        <label style="font-size: larger; color:blue">Profile picture</label>
         <!--<img th:each="i :${imagePath}" th:src="${i}"/>1-->
-        <img th:src="@{/profilepic}" height="200" width="200"/>
-        <div>
+        <p>
+          <!-- <img th:src="@{/profilepic}"/>!-->
+           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>
+           th:src="${i}"
+           !-->
+        </p>
+    <p>
+        <img th:each="i :${imagePath}" th:src="${i}"/>
+    </p>
+
+    <div>
             <label >
                 Upload new picture
                 <input  type="file" class="manual-file-chooser width-full height-full ml-0 js-manual-file-chooser" name = "file"/>
             </label>
         </div>
-        <input type="submit" value="Upload" />
+        <input style="color: green" type="submit" value="Upload" />
+    </form>
+    <form th:action="@{/deletephoto}" method="post">
+        <input style="color: crimson" type="submit" value="Delete photo" />
     </form>
     <p>
-        <label>Bio</label>
+        <label style="color: blue ; font-size: larger" >About Me:</label>
         <p>
-            <label th:each="am :${aboutme}" th:text="${am}"></label>"
+            <label style="color: crimson" th:each="am :${aboutme}" th:text="${am}"></label>
         </p>
     </p>
 
-<p>
-    <form action="/updateaboutmebutton" method="GET">
-       <!-- Update about me: <input type="text" name="aboutme" maxlength="160"/>!-->
-        <input type="submit" value="Update Aboutme"/>
-    </form>
-</p>
+    <p>
+        <form action="/updateaboutmebutton" method="GET">
+           <!-- Update about me: <input type="text" name="aboutme" maxlength="160"/>!-->
+            <input style="color: blue" type="submit" value="Update Aboutme"/>
+        </form>
+    </p>
 
 
 <a style="color:blue" th:href="@{/}">Go to Home Page!</a>
@@ -54,9 +65,17 @@
     <input type="submit" value="Sign Out"/>
     </form>
 </p>
-
+<!--<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.querySelectorAll('img').forEach(function(img){
+            img.onerror = function(){this.style.display='none';};
+        })
+    });
+</script>!-->
 
 <div th:replace="fragments/footer :: footer"/>
 
 </body>
+
 </html>
+
