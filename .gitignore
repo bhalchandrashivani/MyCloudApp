@@ -19,8 +19,6 @@
 build/**/*
 .gradle/**/*
 webapp/out/**/*
-webapp/src/main/resources/application.properties
-webapp/src/main/resources/application-aws.properties
 
 
 ### NetBeans ###
