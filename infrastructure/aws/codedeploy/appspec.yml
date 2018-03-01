@@ -21,3 +21,4 @@ hooks:
   BeforeInstall:
    - location: ./beforeInstall.sh
      timeout: 180
+     runas: ubuntu
