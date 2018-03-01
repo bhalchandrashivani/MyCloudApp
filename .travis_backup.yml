@@ -29,8 +29,7 @@ after_success:
   - ls -al
   - mkdir codedeploy_artifacts
   - cp infrastructure/aws/codedeploy/*.yml .
-  - cp infrastructure/aws/codedeploy/*.sh .
-  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war *.yml *.sh
+  - zip -r csye6225-web-app-$TRAVIS_JOB_NUMBER.zip webapp/build/libs/ROOT.war *.yml
   - ls -al
   - mv csye6225-web-app-$TRAVIS_JOB_NUMBER.zip codedeploy_artifacts/
   - ls -al
@@ -62,6 +61,4 @@ deploy:
     region: us-east-1
     secret_access_key: $secret_access_key
     wait-until-deployed: true
-    on:
-      branch: assignment6
 
