@@ -4,7 +4,6 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.csye6225.spring2018.SpringBootWebApplication;
-//import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
