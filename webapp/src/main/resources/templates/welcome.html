@@ -22,8 +22,12 @@
 
 <form th:action="@{/upload}" method="post"  enctype="multipart/form-data" accept="image/png,image/jpeg,image/jpg">
         <label style="font-size: larger; color:blue">Profile picture</label>
-        
+        <!--<img th:each="i :${imagePath}" th:src="${i}"/>1-->
         <p>
+          <!-- <img th:src="@{/profilepic}"/>!-->
+           <!-- <img th:each="fu : ${fileUrl}" th:src="${fu}" height="200" width="200"/>
+           th:src="${i}"
+           !-->
         </p>
     <p>
         <img th:each="i :${imagePath}" th:src="${i}"/>
@@ -31,7 +35,7 @@
 
     <div>
             <label >
-                Upload new pictures
+                Upload new picture
                 <input  type="file" class="manual-file-chooser width-full height-full ml-0 js-manual-file-chooser" name = "file"/>
             </label>
         </div>
