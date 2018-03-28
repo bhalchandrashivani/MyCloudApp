@@ -4,6 +4,10 @@ import java.io.*;
 
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.AmazonSNSClientBuilder;
+import com.amazonaws.services.sns.model.CreateTopicRequest;
+import com.amazonaws.services.sns.model.PublishRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -82,6 +86,8 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         return fileUrl;
     }
 
+
+
     public String deleteFileFromS3Bucket(String fileNameToDelete) {
         //String fileUrl;
         //fileUrl = fileNameToDelete;
@@ -90,6 +96,18 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         s3.deleteObject(nameCardBucket,fileName);
        // s3client.deleteObject(new DeleteObjectRequest(nameCardBucket+ "/", fileName));
         return "Successfully deleted";
+    }
+
+    public String resetPassword(String email) {
+        AmazonSNSClient snsClient = (AmazonSNSClient) AmazonSNSClientBuilder.defaultClient();
+        CreateTopicRequest crequest = new CreateTopicRequest();
+        crequest.setName("from controller change psw");
+
+        PublishRequest publish = new PublishRequest();
+        publish.setMessage(email);
+        snsClient.createTopic(crequest).setTopicArn("arn:aws:sns:us-east-1:334797497357:password_reset");
+        snsClient.publish(publish);
+        return "";
     }
 
     public ResponseEntity<byte[]> downloadFile(String fileName){

@@ -6,7 +6,6 @@ import com.csye6225.spring2018.model.Account;
 import com.csye6225.spring2018.services.AwsS3Service;
 import com.csye6225.spring2018.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

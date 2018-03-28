@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class PasswordResetController {
 
     @PostMapping
-    public  void resetPassword(@RequestBody String email){
+    public void resetPassword(@RequestBody String email){
         AmazonSNSClient snsClient = new AmazonSNSClient(new ClientConfiguration());
 
         //publish to an SNS topicc
