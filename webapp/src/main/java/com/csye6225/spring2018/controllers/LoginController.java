@@ -108,7 +108,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/forget-password")
+    @PostMapping(value = "/forget-password")
     public String resetPassword(Model model,HttpServletRequest request){
 
         HttpSession session = request.getSession();
