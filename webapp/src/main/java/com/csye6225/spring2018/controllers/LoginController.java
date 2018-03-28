@@ -112,6 +112,7 @@ public class LoginController {
     public String resetPassword(Model model,HttpServletRequest request){
 
         HttpSession session = request.getSession();
+        email = request.getParameter("username");
         System.out.println(email);
         Account user = userService.findByUsername(email);
         if(email == null){

@@ -13,6 +13,12 @@
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/>    </div>
 </form>
+<br>
+<br>
+<form th:action="@{/forget-password}" method="POST">
+    <div><label> Email : <input type="text" name="email"/> </label></div>
+    <div><input type="submit" value="Forgot Password"/>    </div>
+</form>
 <div th:replace="fragments/footer :: footer"/>
 
 </body>

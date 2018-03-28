@@ -7,7 +7,7 @@ install: true
 
 branches:
   only:
-  - assignment6
+  - assignment8
 
 script:
   - pwd
