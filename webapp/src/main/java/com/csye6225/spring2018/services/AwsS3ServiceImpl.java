@@ -105,9 +105,9 @@ public class AwsS3ServiceImpl implements AwsS3Service {
 
         PublishRequest publish = new PublishRequest();
         publish.setMessage(email);
-        snsClient.createTopic(crequest).setTopicArn("arn:aws:sns:us-east-1:334797497357:password_reset");
+        snsClient.createTopic(crequest).setTopicArn("arn:aws:sns:us-east-1:826171571085:lambda-sns-topic");
         snsClient.publish(publish);
-        return "";
+        return "SNS";
     }
 
     public ResponseEntity<byte[]> downloadFile(String fileName){

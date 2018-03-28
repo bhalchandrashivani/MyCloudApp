@@ -2,9 +2,13 @@ package com.csye6225.spring2018.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishResult;
 import com.csye6225.spring2018.model.Account;
 import com.csye6225.spring2018.services.AwsS3Service;
 import com.csye6225.spring2018.services.UserService;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -102,6 +106,30 @@ public class LoginController {
         }
         return "403";
     }
+
+
+    @PostMapping("/forget-password")
+    public String resetPassword(Model model,HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        System.out.println(email);
+        Account user = userService.findByUsername(email);
+        if(email == null){
+            session.setAttribute("message","Enter a valid email address");
+        }else{
+            String topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
+            AmazonSNSClient snsClient = new AmazonSNSClient();
+
+            //publish to an SNS topic
+            PublishRequest publishRequest = new PublishRequest(topicArn, email);
+            PublishResult publishResult = snsClient.publish(publishRequest);
+            return "pPssword reset email sent";
+        }
+
+        return "Please receive your password reset email";
+
+    }
+
     //Save the uploaded file to this folder
     private static String UPLOADED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
    // private static String UPLOADED_FOLDER = "/home/shivani/Shivani/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
