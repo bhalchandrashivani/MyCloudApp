@@ -134,7 +134,7 @@ public class LoginController {
             //publish to an SNS topic
             PublishRequest publishRequest = new PublishRequest(topicArn, email);
             PublishResult publishResult = snsClient.publish(publishRequest);
-            return "index";
+            return "home";
         //}
 
         //return "Please receive your password reset email";
