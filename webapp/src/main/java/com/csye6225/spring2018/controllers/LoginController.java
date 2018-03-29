@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sns.model.CreateTopicResult;
@@ -43,14 +44,13 @@ import java.util.regex.Pattern;
 
 @Controller
 public class LoginController {
+    //Save the uploaded file to this folder
+    private static String UPLOADED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
     private String email;
-
     @Autowired
     private AwsS3Service awsS3Service;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -70,6 +70,30 @@ public class LoginController {
         return "forgot-password";
     }
 
+
+    /*@PostMapping(value = "/forgot-password")
+    public String resetPassword(HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        email = request.getParameter("username");
+        System.out.println(email);
+        //Account user = userService.findByUsername(email);
+        //if(user == null){
+        //    session.setAttribute("message","Enter a valid email address");
+        //}else{
+
+            String topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
+            AmazonSNSClient snsClient = new AmazonSNSClient();
+
+            //publish to an SNS topic
+            PublishRequest publishRequest = new PublishRequest(topicArn, email);
+            PublishResult publishResult = snsClient.publish(publishRequest);
+            return "home";
+        //}
+
+        //return "Please receive your password reset email";
+
+    }*/
 
     @PostMapping(value = "/login")
     public String isValidUser(Model model, HttpServletRequest request) throws Exception{
@@ -120,38 +144,13 @@ public class LoginController {
         return "403";
     }
 
-
-    /*@PostMapping(value = "/forgot-password")
-    public String resetPassword(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-        email = request.getParameter("username");
-        System.out.println(email);
-        //Account user = userService.findByUsername(email);
-        //if(user == null){
-        //    session.setAttribute("message","Enter a valid email address");
-        //}else{
-
-            String topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
-            AmazonSNSClient snsClient = new AmazonSNSClient();
-
-            //publish to an SNS topic
-            PublishRequest publishRequest = new PublishRequest(topicArn, email);
-            PublishResult publishResult = snsClient.publish(publishRequest);
-            return "home";
-        //}
-
-        //return "Please receive your password reset email";
-
-    }*/
-
     @PostMapping(value = "/forgot-password")
     public String resetPassword(HttpServletRequest request){
 
         HttpSession session = request.getSession();
         email = request.getParameter("username");
         //response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
-        JsonObject jsonObject = new JsonObject();
+        //JsonObject jsonObject = new JsonObject();
 
 
         Account user;
@@ -163,18 +162,19 @@ public class LoginController {
         String msg;
         String topicArn;
         try{
-            AmazonSNSClient snsClient = new AmazonSNSClient();
-            snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+
+            AmazonSNS snsClient = AmazonSNSClient.builder().withRegion("us-east-1").build();
 
             //CreateTopicRequest createTopicRequest = new CreateTopicRequest("resetPass");
             //CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
-//        createTopicResult.getTopicArn();
-        topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
+            //createTopicResult.getTopicArn();
+            topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
            // topicArn = createTopicResult.getTopicArn();
 
             msg = email;
             PublishRequest publishRequest = new PublishRequest(topicArn, msg);
-            PublishResult publishResult = snsClient.publish(publishRequest);
+            snsClient.publish(publishRequest);
             session.setAttribute("message","Success SNS publish");
 
         }catch (Exception e){
@@ -184,9 +184,6 @@ public class LoginController {
         return "home";
 
     }
-
-    //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
    // private static String UPLOADED_FOLDER = "/home/shivani/Shivani/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
 
     @PostMapping("/upload")
