@@ -57,6 +57,12 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping(value="/forgot-password")
+    public String forgotpassword(){
+
+        return "forgot-password";
+    }
+
 
     @PostMapping(value = "/login")
     public String isValidUser(Model model, HttpServletRequest request) throws Exception{
@@ -109,12 +115,12 @@ public class LoginController {
 
 
     @PostMapping(value = "/forgot-password")
-    public String resetPassword(Model model,HttpServletRequest request){
+    public String resetPassword(HttpServletRequest request){
 
         HttpSession session = request.getSession();
         email = request.getParameter("username");
         System.out.println(email);
-        Account user = userService.findByUsername(email);
+        //Account user = userService.findByUsername(email);
         if(email == null){
             session.setAttribute("message","Enter a valid email address");
         }else{
@@ -124,7 +130,7 @@ public class LoginController {
             //publish to an SNS topic
             PublishRequest publishRequest = new PublishRequest(topicArn, email);
             PublishResult publishResult = snsClient.publish(publishRequest);
-            return "pPssword reset email sent";
+            return "Password reset email sent";
         }
 
         return "Please receive your password reset email";
