@@ -166,8 +166,8 @@ public class LoginController {
             AmazonSNSClient snsClient = new AmazonSNSClient();
             snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 
-            CreateTopicRequest createTopicRequest = new CreateTopicRequest("resetPass");
-            CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
+            //CreateTopicRequest createTopicRequest = new CreateTopicRequest("resetPass");
+            //CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
 //        createTopicResult.getTopicArn();
         topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
            // topicArn = createTopicResult.getTopicArn();
