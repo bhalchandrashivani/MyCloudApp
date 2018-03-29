@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org">
 <div th:replace="fragments/header :: header"/>
-
 <head>
-    <title>>Welcome Security with Spring Boot!</title>
+    <title>Welcome Security with Spring Boot!</title>
 </head>
 <body>
-<h1>this is login page</h1>
+<div th:replace="fragments/navigation :: navigation"/>
+<div class="container">
+    <p>
+        Welcome to the login page
+    </p>
+</div>
+<hi >Enter email and password</hi>
 
 <form th:action="@{/login}" method="POST">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
