@@ -158,7 +158,7 @@ public class LoginController {
         try{
             user = userService.findByUsername(email);
         }catch (Exception e){
-            return "home";
+            return "403";
         }
         String msg;
         String topicArn;
