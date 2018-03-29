@@ -169,8 +169,8 @@ public class LoginController {
             CreateTopicRequest createTopicRequest = new CreateTopicRequest("resetPass");
             CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
 //        createTopicResult.getTopicArn();
-//        String topicArn = "arn:aws:sns:us-east-1:123456789012:resetPassword";
-            topicArn = createTopicResult.getTopicArn();
+        topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
+           // topicArn = createTopicResult.getTopicArn();
 
             msg = email;
             PublishRequest publishRequest = new PublishRequest(topicArn, msg);
