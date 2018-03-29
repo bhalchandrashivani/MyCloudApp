@@ -178,7 +178,7 @@ public class LoginController {
             session.setAttribute("message","Success SNS publish");
 
         }catch (Exception e){
-            return "publish cathc";
+            //return "home";
         }
 
         return "home";
