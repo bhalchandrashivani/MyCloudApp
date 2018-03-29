@@ -120,8 +120,8 @@ public class LoginController {
         HttpSession session = request.getSession();
         email = request.getParameter("username");
         System.out.println(email);
-        //Account user = userService.findByUsername(email);
-        if(email == null){
+        Account user = userService.findByUsername(email);
+        if(user == null){
             session.setAttribute("message","Enter a valid email address");
         }else{
             String topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
@@ -130,7 +130,8 @@ public class LoginController {
             //publish to an SNS topic
             PublishRequest publishRequest = new PublishRequest(topicArn, email);
             PublishResult publishResult = snsClient.publish(publishRequest);
-            return "Password reset email sent";
+            session.setAttribute("message","Email sent");
+            //return "Password reset email sent";
         }
 
         return "Please receive your password reset email";
