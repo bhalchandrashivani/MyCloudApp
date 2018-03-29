@@ -6,12 +6,15 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.CreateTopicRequest;
+import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.csye6225.spring2018.model.Account;
 import com.csye6225.spring2018.services.AwsS3Service;
 import com.csye6225.spring2018.services.UserService;
 import com.google.gson.JsonObject;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -117,7 +121,7 @@ public class LoginController {
     }
 
 
-    @PostMapping(value = "/forgot-password")
+    /*@PostMapping(value = "/forgot-password")
     public String resetPassword(HttpServletRequest request){
 
         HttpSession session = request.getSession();
@@ -138,6 +142,46 @@ public class LoginController {
         //}
 
         //return "Please receive your password reset email";
+
+    }*/
+
+    @PostMapping(value = "/forgot-password")
+    public String resetPassword(HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        email = request.getParameter("username");
+        //response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
+        JsonObject jsonObject = new JsonObject();
+
+
+        Account user;
+        try{
+            user = userService.findByUsername(email);
+        }catch (Exception e){
+            return "home";
+        }
+        String msg;
+        String topicArn;
+        try{
+            AmazonSNSClient snsClient = new AmazonSNSClient();
+            snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+
+            CreateTopicRequest createTopicRequest = new CreateTopicRequest("resetPass");
+            CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
+//        createTopicResult.getTopicArn();
+//        String topicArn = "arn:aws:sns:us-east-1:123456789012:resetPassword";
+            topicArn = createTopicResult.getTopicArn();
+
+            msg = email;
+            PublishRequest publishRequest = new PublishRequest(topicArn, msg);
+            PublishResult publishResult = snsClient.publish(publishRequest);
+            session.setAttribute("message","Success SNS publish");
+
+        }catch (Exception e){
+            return "publish cathc";
+        }
+
+        return "home";
 
     }
 
