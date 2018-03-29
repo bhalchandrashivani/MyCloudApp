@@ -2,6 +2,9 @@ package com.csye6225.spring2018.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
@@ -124,13 +127,13 @@ public class LoginController {
         //if(user == null){
         //    session.setAttribute("message","Enter a valid email address");
         //}else{
+
             String topicArn = "arn:aws:sns:us-east-1:826171571085:lambda-sns-topic";
             AmazonSNSClient snsClient = new AmazonSNSClient();
 
             //publish to an SNS topic
             PublishRequest publishRequest = new PublishRequest(topicArn, email);
             PublishResult publishResult = snsClient.publish(publishRequest);
-            session.setAttribute("message","Email sent");
             return "index";
         //}
 
