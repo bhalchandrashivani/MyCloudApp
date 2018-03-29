@@ -1,24 +1,31 @@
 package com.csye6225.spring2018.services;
 
-import com.amazonaws.services.s3.AmazonS3;
+import java.io.*;
+
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.sns.AmazonSNSClient;
-import com.amazonaws.services.sns.AmazonSNSClientBuilder;
-import com.amazonaws.services.sns.model.CreateTopicRequest;
-import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.http.AmazonHttpClient;
+import org.springframework.web.multipart.MultipartFile;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.Date;
 
 
@@ -75,8 +82,6 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         return fileUrl;
     }
 
-
-
     public String deleteFileFromS3Bucket(String fileNameToDelete) {
         //String fileUrl;
         //fileUrl = fileNameToDelete;
@@ -85,18 +90,6 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         s3.deleteObject(nameCardBucket,fileName);
        // s3client.deleteObject(new DeleteObjectRequest(nameCardBucket+ "/", fileName));
         return "Successfully deleted";
-    }
-
-    public String resetPassword(String email) {
-        AmazonSNSClient snsClient = (AmazonSNSClient) AmazonSNSClientBuilder.defaultClient();
-        CreateTopicRequest crequest = new CreateTopicRequest();
-        crequest.setName("from controller change psw");
-
-        PublishRequest publish = new PublishRequest();
-        publish.setMessage(email);
-        snsClient.createTopic(crequest).setTopicArn("arn:aws:sns:us-east-1:826171571085:lambda-sns-topic");
-        snsClient.publish(publish);
-        return "SNS";
     }
 
     public ResponseEntity<byte[]> downloadFile(String fileName){

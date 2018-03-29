@@ -6,17 +6,19 @@
 </head>
 <body>
 <div th:replace="fragments/navigation :: navigation"/>
+
 <div class="container">
     <p>
-        Welcome to view all profiles!!!
+        Welcome to reset password in my profile!!!
     </p>
 </div>
-<hi >Enter email to receive link</hi>
-<form th:action="@{/forgot-password}" method="POST">
-    <div><label> Email : <input type="text" name="email"/> </label></div>
-    <div><input type="submit" value="Forgot Password"/>    </div>
+<hi >Please enter the email address for which the password needs to be updated </hi>
+<p>
+<form action="/password_reset" method="post">
+    Email: <input type="text" name="useremail" maxlength="160"/>
+    <input type="submit" value="Reset Password"/>
 </form>
+</p>
 <div th:replace="fragments/footer :: footer"/>
-
 </body>
 </html>
