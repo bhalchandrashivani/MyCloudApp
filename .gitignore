@@ -22,11 +22,11 @@ webapp/out/**/*
 webapp/src/main/resources/application.properties
 webapp/src/main/resources/application-aws.properties
 
-/home/rscx/csye6225/dev/webapp/build/resources/main/application.properties
-/home/rscx/csye6225/dev/webapp/build/resources/main/application-aws.properties
-/home/rscx/csye6225/dev/webapp/build/resources/main/amazon.properties
-/home/rscx/csye6225/dev/webapp/src/main/resources/application.properties
-/home/rscx/csye6225/dev/webapp/src/main/resources/application-aws.properties
+/home/csye6225/dev/webapp/build/resources/main/application.properties
+/home/csye6225/dev/webapp/build/resources/main/application-aws.properties
+/home/csye6225/dev/webapp/build/resources/main/amazon.properties
+/home/csye6225/dev/webapp/src/main/resources/application.properties
+/home/csye6225/dev/webapp/src/main/resources/application-aws.properties
 
 ### NetBeans ###
 nbproject/private/
