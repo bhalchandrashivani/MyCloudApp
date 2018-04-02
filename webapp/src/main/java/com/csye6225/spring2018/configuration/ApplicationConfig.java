@@ -2,9 +2,11 @@ package com.csye6225.spring2018.configuration;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.csye6225.spring2018.SpringBootWebApplication;
-import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -70,4 +72,10 @@ public class ApplicationConfig {
                 .withCredentials(provider)
                 .build();
     }
+//    @Bean
+//    public AmazonSNS amazonSNSClient(){
+//        InstanceProfileCredentialsProvider provider = new InstanceProfileCredentialsProvider(true);
+//        // AmazonSNSClientBuilder snsClient = new AmazonSNSClientBuilder(new InstanceProfileCredentialsProvider(true));
+//        return AmazonSNSClientBuilder.standard().withCredentials(provider).withRegion(Regions.US_EAST_1).build();
+//    }
 }
