@@ -130,22 +130,24 @@ public class LoginController {
         System.out.println("Uploading for " + email);
         logger.info("Uploading for email: " + email);
         if (file.isEmpty()) {
+            logger.info("File was empty");
             return "welcome";
         } else {
             Account user = userService.findByUsername(email);
             String aboutmefromDb = user.getAboutme();
+            logger.info("File not emplty. Uploading");
             try {
              //   String abc =configuration.getName();
              //   System.out.println(abc);
                // public void getActiveProfiles() {
                 String[] profileName = environment.getActiveProfiles();
                 for (String profile : profileName) {
-                    System.out.println("Currently active profile - " + profile);
+                    logger.info("Currently active profile - " + profile);
                     if (profile.equalsIgnoreCase("default")) {
                         byte[] bytes = file.getBytes();
                         Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
                         Files.write(path, bytes);
-                        System.out.println("inside default upload");
+                        logger.info("inside default upload");
                         if (user != null) {
                             user.setImagepath(path.toString());
                             userService.saveUser(user);
@@ -161,11 +163,12 @@ public class LoginController {
                         //if (user != null) {
 
                        // }
-                        System.out.println("inside aws upload");
+                        logger.info("inside aws upload");
 
                         String fileName = file.getOriginalFilename();
-
+                        logger.info("inside aws upload fileName>> "+fileName);
                         String newfilepath = awsS3Service.uploadFile(file, fileName);
+                        logger.info("inside aws upload newfilepath>> "+newfilepath);
                         user.setImagepath(newfilepath);
                         userService.saveUser(user);
                         model.addAttribute("username", email);
