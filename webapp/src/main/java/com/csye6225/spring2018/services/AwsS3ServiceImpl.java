@@ -1,31 +1,22 @@
 package com.csye6225.spring2018.services;
 
-import java.io.*;
-
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.http.AmazonHttpClient;
-import org.springframework.web.multipart.MultipartFile;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
+import java.io.*;
 import java.util.Date;
 
 
@@ -45,6 +36,7 @@ public class AwsS3ServiceImpl implements AwsS3Service {
     @Value("${endpointUrl}")
     private String endpointUrl;
 
+    private final static Logger logger = LoggerFactory.getLogger(AwsS3ServiceImpl.class);
     /*
      * upload file to folder and set it to public
      */
@@ -66,6 +58,7 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         String fileName = generateFileName(file1);
         endpointUrl="https://s3.amazonaws.com";
         fileUrl = endpointUrl + "/" + nameCardBucket + "/" + fileName;
+        logger.info("Inside s3serviceImpl fileURL>> "+fileUrl);
         //String fileNameInS3 = filename;
            // s3.putObject(nameCardBucket,fileName,file);
             s3.putObject(new PutObjectRequest(nameCardBucket,
