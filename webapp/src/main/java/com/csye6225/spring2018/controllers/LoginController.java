@@ -236,12 +236,12 @@ public class LoginController {
             //print MessageId of message published to SNS topic
             logger.info("Password reset message sent!");
 
-            return "welcome";
+            return "signup";
         }
         session.setAttribute("username", useremail);
 
 
-        return "welcome";
+        return "signup";
     }
 
    // private static String DELETED_FOLDER = "/home/shivani/cloud/csye6225/dev/csye6225-spring2018-1/webapp/src/main/resources/images/";
