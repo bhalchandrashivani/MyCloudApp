@@ -128,6 +128,7 @@ public class LoginController {
                                    @ModelAttribute Account account, HttpServletRequest request) {
 
         System.out.println("Uploading for " + email);
+        logger.info("Uploading for email: " + email);
         if (file.isEmpty()) {
             return "welcome";
         } else {
