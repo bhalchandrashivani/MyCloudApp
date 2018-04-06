@@ -59,17 +59,10 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         endpointUrl="https://s3.amazonaws.com";
         fileUrl = endpointUrl + "/" + nameCardBucket + "/" + fileName;
         logger.info("Inside s3serviceImpl fileURL>> "+fileUrl);
-        //String fileNameInS3 = filename;
-           // s3.putObject(nameCardBucket,fileName,file);
-            s3.putObject(new PutObjectRequest(nameCardBucket,
-                    fileName, file)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
-        //s3client.putObject(
-        //        new PutObjectRequest(nameCardBucket,
-        //                fileName, file)
-        //                .withCannedAcl(CannedAccessControlList.PublicRead));
+        s3.putObject(new PutObjectRequest(nameCardBucket,fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
 
     }catch (Exception e) {
+            logger.info("Inside s3serviceImpl e>> "+e);
             e.printStackTrace();
         }
         return fileUrl;
