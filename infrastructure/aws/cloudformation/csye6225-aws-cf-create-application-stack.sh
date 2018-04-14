@@ -21,6 +21,12 @@ read dname
 echo "Please enter EC2 fo tag matching"
 read ec2tagmatchingname
 
+echo "Enter your certifciate number"
+read cert
+
+echo "Enter your DNS name"
+read dns
+
 Iamprofilename=CodeDeployEC2ServiceRoleProfile
 
 fname=web-app.$dname
@@ -29,7 +35,7 @@ tld=.me
 echo $stack_name
 subnetExportName1="csye6225-cloud-Networking-db-subnet1Id"
 subnetExportName2="csye6225-cloud-Networking-db-subnet2Id"
-stackId=$(aws cloudformation create-stack --stack-name $stack_name --template-body file://csye6225-cf-application.json --parameters ParameterKey=subnetExportName1,ParameterValue=$subnetExportName1 ParameterKey=subnetExportName2,ParameterValue=$subnetExportName2 ParameterKey=keyTag,ParameterValue=$idRsa ParameterKey=NameTag,ParameterValue=$ec2tagmatchingname ParameterKey=S3BucketTag,ParameterValue=$fname$tld ParameterKey=IamTag,ParameterValue=$Iamprofilename --query [StackId] --output text)
+stackId=$(aws cloudformation create-stack --stack-name $stack_name --template-body file://csye6225-cf-application.json --parameters ParameterKey=subnetExportName1,ParameterValue=$subnetExportName1 ParameterKey=subnetExportName2,ParameterValue=$subnetExportName2 ParameterKey=keyTag,ParameterValue=$idRsa ParameterKey=NameTag,ParameterValue=$ec2tagmatchingname ParameterKey=S3BucketTag,ParameterValue=$fname$tld ParameterKey=IamTag,ParameterValue=$Iamprofilename ParameterKey=CertificateArnNumber,ParameterValue=$cert ParameterKey=originalDomain,ParameterValue=$dns --query [StackId] --output text)
 
 #aws ec2 associate-iam-instance-profile --instance-id i-123456789abcde123 --iam-instance-profile Name=admin-role
 
