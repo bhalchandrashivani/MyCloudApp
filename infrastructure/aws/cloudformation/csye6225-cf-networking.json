@@ -155,6 +155,52 @@
         "VpcId" : {"Ref" : "myVPC"} 
      }
    },
+   "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": "csye6225-spring2018-loadBalancer",
+        "GroupDescription": "Rules For LoadBalancer",
+        "VpcId": {"Ref": "myVPC"},
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIpv6": "::/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "8080",
+            "ToPort": "8080",
+            "CidrIpv6": "::/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "8080",
+            "ToPort": "8080",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+      }
+    },
    "dbSecurityGroup" : {
     "Type" : "AWS::EC2::SecurityGroup",
     "Properties" : {
@@ -194,6 +240,13 @@
         "Name" : "csye6225-cloud-Networking-web-subnet"
       }
     },
+    "myvpcID" : {
+      "Description" : "The ID of vpc",
+      "Value" : {"Ref" : "myVPC"},
+      "Export" : {
+        "Name" : "csye6225-cloud-Networking-VPC"
+      }
+    },
     "webServerSecurityGroupId" : {
       "Description" : "The ID of web server security group",
       "Value" : {"Ref" : "webServerSecurityGroup"},
@@ -201,6 +254,13 @@
         "Name" : "csye6225-cloud-Networking-web-security-group"
       }
     },
+    "loadbalancerSecurityGroupId" : {
+      "Description" : "The ID of LoadBalancer security group",
+      "Value" : {"Ref" : "LoadBalancerSecurityGroup"},
+      "Export" : {
+        "Name" : "csye6225-cloud-Networking-loadbalancer-security-group"
+      }
+    },    
     "dbSecurityGroupId" : {
       "Description" : "The ID of web server security group",
       "Value" : {"Ref" : "dbSecurityGroup"},
