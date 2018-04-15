@@ -40,11 +40,22 @@
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
         "CidrBlock" : "10.0.0.0/24",
+        "AvailabilityZone" : "us-east-1c",
         "MapPublicIpOnLaunch" : true,
         "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "webSubnetTag"}} ],
         "VpcId" : {"Ref" : "myVPC"}
       }
     },
+    "webSubnet2" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : "10.0.3.0/24",
+        "AvailabilityZone" : "us-east-1d",
+        "MapPublicIpOnLaunch" : true,
+        "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "webSubnetTag"}} ],
+        "VpcId" : {"Ref" : "myVPC"}
+      }
+    },    
       "dbSubnet1" : {
         "Type" : "AWS::EC2::Subnet",
         "Properties" : {
@@ -107,6 +118,13 @@
         "SubnetId" : {"Ref" : "webSubnet"}
       }
     },
+    "publicRouteTableSubnetAssociation2" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {"Ref" : "publicRouteTable"},
+        "SubnetId" : {"Ref" : "webSubnet2"}
+      }
+    },    
     "privateRouteTableSubnetAssociation1" : {
       "Type" : "AWS::EC2::SubnetRouteTableAssociation",
       "Properties" : {
@@ -121,84 +139,77 @@
         "SubnetId" : {"Ref" : "dbSubnet2"}
       } 
     },
-    "webServerSecurityGroup" : {
-      "Type" : "AWS::EC2::SecurityGroup",
-      "Properties" : {
-        "GroupName" : {"Ref" : "webServerSecurityGroupNameTag"},
-        "GroupDescription" : "Security tag for web server",
-        "SecurityGroupIngress" : [
-          {
-            "CidrIp" : "0.0.0.0/0",
-            "FromPort" : 22,
-            "IpProtocol" : "tcp",
-            "ToPort" : 22
-          },
-          {
-            "CidrIp" : "0.0.0.0/0",
-            "FromPort" : 80,
-            "IpProtocol" : "tcp",
-            "ToPort" : 80
-          },
-          {
-            "CidrIp" : "0.0.0.0/0",
-            "FromPort" : 8080,
-            "IpProtocol" : "tcp",
-            "ToPort" : 8080
-          },
-          {
-            "CidrIp" : "0.0.0.0/0",
-            "FromPort" : 443,
-            "IpProtocol" : "tcp",
-            "ToPort" : 443
-          }
-         ],
-        "VpcId" : {"Ref" : "myVPC"} 
-     }
-   },
-   "LoadBalancerSecurityGroup": {
+    "webServerSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupName": "csye6225-spring2018-loadBalancer",
-        "GroupDescription": "Rules For LoadBalancer",
-        "VpcId": {"Ref": "myVPC"},
+        "GroupName": {"Ref" : "webServerSecurityGroupNameTag"},
+        "GroupDescription": "Enable HTTP access via port 80, SSH access via port 22",
+        "VpcId": {
+          "Ref": "myVPC"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"443",
+            "ToPort":"443",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"8080",
+            "ToPort":"8080",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"80",
+            "ToPort":"80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"22",
+            "ToPort":"22",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },     
+    "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName":  "ALB_SG",
+        "GroupDescription": "Enable HTTP access via port 808, SSH access via port 22",
+        "VpcId": {
+          "Ref": "myVPC"
+        },
         "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
             "FromPort": "80",
-            "ToPort": "80",
+            "ToPort": "80", 
             "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "443",
-            "ToPort": "443",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "443",
-            "ToPort": "443",
-            "CidrIpv6": "::/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "8080",
-            "ToPort": "8080",
-            "CidrIpv6": "::/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "8080",
-            "ToPort": "8080",
-            "CidrIp": "0.0.0.0/0"
-          }
+          }          
         ],
+          "SecurityGroupEgress": [
+          {
+            "IpProtocol":"tcp",
+            "FromPort":"8080",
+            "ToPort":"8080",
+            "DestinationSecurityGroupId":{
+              "Fn::GetAtt":[
+                "webServerSecurityGroup",
+                "GroupId"
+              ]
+            }
+          }
+        ]
       }
     },
    "dbSecurityGroup" : {
@@ -240,6 +251,13 @@
         "Name" : "csye6225-cloud-Networking-web-subnet"
       }
     },
+    "webSubnetId2" : {
+      "Description" : "The ID of web subnet",
+      "Value" : {"Ref" : "webSubnet2"},
+      "Export" : {
+        "Name" : "csye6225-cloud-Networking-web-subnet2"
+      }
+    },    
     "myvpcID" : {
       "Description" : "The ID of vpc",
       "Value" : {"Ref" : "myVPC"},

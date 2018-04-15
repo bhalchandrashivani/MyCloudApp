@@ -197,15 +197,35 @@ public class LoginController {
         if (useremail == null) {
             session.setAttribute("message", "enter valid credentials!");
         } else {
+            /*
+            //PasswordResetToken token = new PasswordResetToken();
+            //token.setToken(UUID.randomUUID().toString());
+            //token.setUser(useremail);
+            //token.setExpiryDate(20);
+            //tokenRepository.save(token);
+            //snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+            //create a new SNS topic
+            CreateTopicRequest createTopicRequest = new CreateTopicRequest("password_reset");
+            CreateTopicResult createTopicResult = snsClient.createTopic(createTopicRequest);
 
-            Account user = userService.findByUsername(useremail);
-            //System.out.println("****outside findByEmail method****");
-            if(user == null){
-                session.setAttribute("message","enter valid credentials!");
-            }else{
+            //print TopicArn
+            System.out.println(createTopicResult);
+//get request id for CreateTopicRequest from SNS metadata
+            System.out.println("CreateTopicRequest - " + snsClient.getCachedResponseMetadata(createTopicRequest));
 
+            String msg = useremail;
+            // PublishRequest publishRequest = new PublishRequest(createTopicResult.toString(), msg);
+            PublishRequest publishRequest  = new PublishRequest()
+                    .withTopicArn(createTopicResult.getTopicArn())
+                    .withMessage("Example notification sent at " + new Date());
+            //service.publish(publishReq);
+            PublishResult publishResult = snsClient.publish(publishRequest);
+//print MessageId of message published to SNS topic
+            System.out.println("MessageId - " + publishResult.getMessageId());
+*/
             InstanceProfileCredentialsProvider provider = new InstanceProfileCredentialsProvider(true);
             AmazonSNS snsClient = AmazonSNSClientBuilder.standard().withCredentials(provider).withRegion(Regions.US_EAST_1).build();
+           // snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
 
             //get topic arn
             String topicArn= snsClient.createTopic("password_reset").getTopicArn();
@@ -217,7 +237,6 @@ public class LoginController {
             logger.info("Password reset message sent!");
 
             return "login";
-            }
         }
         session.setAttribute("username", useremail);
 

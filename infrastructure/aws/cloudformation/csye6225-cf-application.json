@@ -22,9 +22,32 @@
     },
     "originalDomain": {
       "Type": "String"
+    },
+    "codeDeployarnTag": {
+      "Type": "String"
+    },    
+    "VpcId": {
+      "Type": "String"
+    },
+    "SubnetId": {
+      "Description": "Private Subnet Id 1",
+      "Type": "String"
+    },
+    "SubnetId2": {
+      "Description": "Private Subnet ID 2",
+      "Type": "String"
     },    
     "IamTag": {
     "Type": "String"
+    },
+    "SSHLocation" : {
+      "Description" : "The IP address range that can be used to SSH to the EC2 instances",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
     }
   },
   "Resources" : {
@@ -154,8 +177,7 @@
           }
         }
       }
-    },
-    
+    },    
     "myDBSubnetGroup" : {
       "Type" : "AWS::RDS::DBSubnetGroup",
       "Properties" : {
@@ -174,7 +196,7 @@
         "EngineVersion" : "5.6.37",
         "DBInstanceClass" : "db.t2.medium",
         "MultiAZ" : false,
-        "DBInstanceIdentifier" : "csye6225-spriCodeDeployEC2ServiceRoleng2018",
+        "DBInstanceIdentifier" : "csye6225-spring2018",
         "MasterUsername" : "csye6225master",
         "MasterUserPassword" : "csye6225password",
         "DBSubnetGroupName" : {"Ref" : "myDBSubnetGroup"},
@@ -185,11 +207,13 @@
     "MyServerGroup": {
     "Type": "AWS::AutoScaling::AutoScalingGroup",
     "Properties": {
-      "VPCZoneIdentifier" : [ {"Fn::ImportValue" : "csye6225-cloud-Networking-db-subnet1Id"},
-        {"Fn::ImportValue" : "csye6225-cloud-Networking-db-subnet2Id"} ],
+      "VPCZoneIdentifier" : [{"Fn::ImportValue" : "csye6225-cloud-Networking-web-subnet"},
+        {"Fn::ImportValue" : "csye6225-cloud-Networking-web-subnet2"}
+      ],
       "LaunchConfigurationName": {"Ref": "ec2Instance"},
       "MinSize": "3",
       "MaxSize": "7",
+      "Cooldown": "60",
       "DesiredCapacity" : "3",
       "TargetGroupARNs" : [ { "Ref" : "ALBTargetGroup" } ],
       "Tags": [{
@@ -198,11 +222,25 @@
         "PropagateAtLaunch" : "true"
       }]
     },
-    "DependsOn": [
-      "ALBListener",
-      "ec2Instance"
-    ]
+    "DependsOn": "ALBListener"
   },
+  "ApplicationLoadBalancer": {
+    "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+    "Properties": {
+      "Scheme": "internet-facing",
+      "Name": "csye6225LoadBalancer",
+      "Subnets" : [{"Fn::ImportValue" : "csye6225-cloud-Networking-web-subnet"},
+        {"Fn::ImportValue" : "csye6225-cloud-Networking-web-subnet2"}
+      ],
+      "SecurityGroups": [{"Fn::ImportValue" : "csye6225-cloud-Networking-loadbalancer-security-group"}],
+      "Type": "application",
+      "IpAddressType": "ipv4",
+      "Tags": [{
+        "Key": "NAME",
+        "Value": "CSYE6225"
+      }]
+    }
+  },  
     "WebServerScaleUpPolicy": {
     "Type": "AWS::AutoScaling::ScalingPolicy",
     "Properties": {
@@ -254,13 +292,13 @@
   "CPUAlarmLow": {
     "Type": "AWS::CloudWatch::Alarm",
     "Properties": {
-      "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+      "AlarmDescription": "Scale-down if CPU < 8% for 10 minutes",
       "MetricName": "CPUUtilization",
       "Namespace": "AWS/EC2",
       "Statistic": "Average",
       "Period": "300",
       "EvaluationPeriods": "2",
-      "Threshold": "70",
+      "Threshold": "8",
       "AlarmActions": [
         {
           "Ref": "WebServerScaleDownPolicy"
@@ -286,55 +324,37 @@
         "TargetGroupArn": {"Ref": "ALBTargetGroup"}
       }],
       "LoadBalancerArn": {"Ref": "ApplicationLoadBalancer"},
-      "Port": "443",
+      "Port": 443,
       "Protocol": "HTTPS"
     }
-  },  
-    "ApplicationLoadBalancer": {
-      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
-      "Properties": {
-        "Scheme": "internet-facing",
-        "Subnets" : [ {"Fn::ImportValue" : "csye6225-cloud-Networking-db-subnet1Id"},
-          {"Fn::ImportValue" : "csye6225-cloud-Networking-db-subnet2Id"} ],
-        "LoadBalancerAttributes": [
-          {
-            "Key": "idle_timeout.timeout_seconds",
-            "Value": "60"
-          }
-        ],
-        "SecurityGroups": [{"Fn::ImportValue" : "csye6225-cloud-Networking-loadbalancer-security-group"}],
-        "Tags": [{
+  },
+  "ALBListenerhttp": {
+    "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    "Properties": {
+      "DefaultActions": [{
+        "Type": "forward",
+        "TargetGroupArn": {"Ref": "ALBTargetGroup"}
+      }],
+      "LoadBalancerArn": {"Ref": "ApplicationLoadBalancer"},
+      "Port": 80,
+      "Protocol": "HTTP"
+    }
+  },
+  "ALBTargetGroup": {
+    "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    "Properties": {
+      "Protocol": "HTTP",
+      "Name" : "MyTargetGroup",
+      "Port": 8080,
+      "VpcId": {"Ref": "VpcId"},
+      "Tags": [
+        {
           "Key": "NAME",
           "Value": "CSYE6225"
-        }]
-      }
-    },
-      "ALBTargetGroup": {
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-      "Properties": {
-        "HealthCheckIntervalSeconds": 40,
-        "HealthCheckTimeoutSeconds": 30,
-        "HealthyThresholdCount" : 3,
-        "UnhealthyThresholdCount" : 5,
-        "Protocol": "HTTP",
-        "HealthCheckProtocol": "HTTP",
-        "HealthCheckPort": "8080",
-        "TargetGroupAttributes": [
-          {
-            "Key": "deregistration_delay.timeout_seconds",
-            "Value": "20"
-          }
-        ],
-        "Port": 8080,
-        "VpcId": {"Fn::ImportValue" : "csye6225-cloud-Networking-VPC"},
-        "Tags": [
-          {
-            "Key": "NAME",
-            "Value": "CSYE6225"
-          }
-        ]
-      }
-    },
+        }
+      ]
+    }
+  },
     "MyDNSRecord" : {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
@@ -371,12 +391,44 @@
     "Properties": {
       "TopicName": "password_reset"
     }
-  },
+},
+"CodeDeployApplication" :{
+   "Type" : "AWS::CodeDeploy::Application",
+     "Properties" : {
+       "ApplicationName" : "CSYE6225WebappCodeDeploy"
+     }
+   },  
+   "DeploymentGroup":{
+    "Type" : "AWS::CodeDeploy::DeploymentGroup",
+    "Properties" : {
+      "ApplicationName" :{
+        "Ref": "CodeDeployApplication"
+      },
+         "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+         "DeploymentGroupName" : "CodeDeployApplicationGroup",
+         "AutoScalingGroups" : [ {"Ref": "MyServerGroup"}],
+         "LoadBalancerInfo": {
+          "ElbInfoList": [{
+            "Name": { "Fn::GetAtt":["ApplicationLoadBalancer","LoadBalancerName"]}
+          }]
+        },
+      "DeploymentStyle": {
+        "DeploymentType": "IN_PLACE",
+        "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
+      },
+      "Ec2TagFilters" : [ {
+        "Key" : "Name",
+        "Type" : "KEY_AND_VALUE",
+              "Value" : { "Ref": "NameTag"}
+          }],
+          "ServiceRoleArn" : {"Ref": "codeDeployarnTag"}
+      }
+  },  
    "s3Bucket" : {
       "Type" : "AWS::S3::Bucket",
       "Properties" : {
         "BucketName" : { "Ref" : "S3BucketTag" }
       }
    } 
-  },
+  }
 }
