@@ -16,11 +16,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 apply plugin: 'idea'
 
-dependencyManagement {
-    imports {
-        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.161'
-    }
-}
 
 jar {
     baseName = 'gs-accessing-data-mysql'
@@ -64,7 +59,7 @@ dependencies {
 
     compile('com.h2database:h2:+')
     compile('com.amazonaws:aws-java-sdk-s3:1.11.280')
-    compile('com.amazonaws:aws-java-sdk-sns')
+    compile ('com.amazonaws:aws-java-sdk-sns:1.11.126')
 
     compile('org.apache.commons:commons-lang3:+')
     compile('com.google.guava:guava:+')
