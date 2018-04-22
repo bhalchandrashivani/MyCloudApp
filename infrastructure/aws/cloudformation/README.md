@@ -1,4 +1,4 @@
-# AWS CloudFormation Scripts & Templates
+# AWS CloudFormation Scripts & Template
 
 First run networking stack
 #Creating a Stack using Amazon CloudFormation
